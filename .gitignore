@@ -1,0 +1,4 @@
+*.ipynb_checkpoints
+*root
+*__pycache__
+.idea
