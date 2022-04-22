@@ -2,3 +2,4 @@
 *root
 *__pycache__
 .idea
+*.npy
