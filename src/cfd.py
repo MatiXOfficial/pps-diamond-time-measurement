@@ -18,13 +18,13 @@ class CFD:
 
     def predict(self, Y: np.array, X: np.array = None, threshold: float = None, hysteresis: float = None, log: bool = False):
         """
-        Works only with positive
+        Find the timestamp
         :param Y: y axis data (ampl)
         :param X: x axis data (time). If None, set to an array from 0 to len(Y) - 1
         :param threshold: max - min threshold. if None: np.std(Y[:self.n_baseline]) * 6
         :param hysteresis: if None: threshold / 100
         :param log: if True, log messages are printed
-        :return:
+        :return: timestamp
         """
         if X is None:
             X = np.arange(len(Y))
