@@ -20,5 +20,5 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
         plt.ylim(-0.1, 1.1)
     if timestamp is not None:
         plt.axvline(timestamp, c='red')
-        title += f', timestamp={timestamp:0.2f}'
+        title += f', t={timestamp:0.2f}'
     plt.title(title)
