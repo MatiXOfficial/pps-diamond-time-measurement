@@ -1,12 +1,13 @@
 import numpy as np
-
+from scipy import signal
+from scipy.ndimage import filters
 
 class CFD:
     """
     Constant Fraction Discriminator.
     """
 
-    def __init__(self, n_baseline: int = 20, fraction: float = 0.3, choose_first: bool = True):
+    def __init__(self, n_baseline: int = 20, fraction: float = 0.3, choose_first: bool = True,  smooth: bool=False, kernel_width: float=10, kernel_sigma: float=5):
         """
         :param n_baseline: number of first values taken into account when calculating the baseline
         :param fraction: Peak fraction to return
@@ -15,6 +16,9 @@ class CFD:
         self.n_baseline = n_baseline
         self.fraction = fraction
         self.choose_first = choose_first
+        self.smooth=smooth
+        self.kernel_width=kernel_width
+        self.kernel_sigma=kernel_sigma
 
     def predict(self, Y: np.array, X: np.array = None, threshold: float = None, hysteresis: float = None, log: bool = False):
         """
@@ -40,6 +44,10 @@ class CFD:
             if log:
                 print('max - min < threshold')
             return None
+        
+        if self.smooth:
+            kernel = signal.gaussian(self.kernel_width, self.kernel_sigma)
+            samples = filters.convolve(samples, kernel)
 
         # work only with positive and normalized signals
         samples -= np.mean(samples[:self.n_baseline])
