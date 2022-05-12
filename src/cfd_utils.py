@@ -9,7 +9,7 @@ from src.cfd import CFD
 TIME_STEP = 0.15625
 
 
-def calculate_event_cfd(cfd: CFD, events: dict, i_event: int, shift: bool = True, time_step: float = TIME_STEP,
+def calculate_event_cfd(cfd: list[CFD], events: dict, i_event: int, shift: bool = True, time_step: float = TIME_STEP,
                         log: bool = False):
     """
     Calculate the cfd timestamps for all waveforms within an event
@@ -22,9 +22,9 @@ def calculate_event_cfd(cfd: CFD, events: dict, i_event: int, shift: bool = True
     :return: np array with a timestamp for each channel in the i_event-th event in events
     """
     event_ampl = events['sample_ampl'][i_event]
-    n_events = len(event_ampl)
+    n_channels = len(event_ampl)
 
-    event_cfd_timestamps = np.array([cfd.predict(event_ampl[i], log=log) for i in range(n_events)])
+    event_cfd_timestamps = np.array([cfd[i].predict(event_ampl[i], log=log) for i in range(n_channels)])
     if shift:
         event_cfd_timestamps *= time_step
 
@@ -38,7 +38,7 @@ def _gauss(x, a, mu, sigma):
     return a * np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
 
 
-def find_diff_hist_stats(cfd: CFD, events: dict, show: bool = True, return_gauss_stats: bool = True,
+def find_diff_hist_stats(cfd: list[CFD], events: dict, show: bool = True, return_gauss_stats: bool = True,
                          hist_range: tuple[float, float] = (-0.5, 1.5), hist_alpha: float = 1., hist_label: str = None,
                          plot_gauss: bool = True, time_step: float = TIME_STEP):
     """
