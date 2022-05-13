@@ -9,11 +9,11 @@ from src.cfd import CFD
 TIME_STEP = 0.15625
 
 
-def calculate_event_cfd(cfd: list[CFD] | CFD, events: dict, i_event: int, shift: bool = True, time_step: float = TIME_STEP,
-                        log: bool = False):
+def calculate_event_cfd(cfd: CFD | list[CFD], events: dict, i_event: int, shift: bool = True,
+                        time_step: float = TIME_STEP, log: bool = False):
     """
     Calculate the cfd timestamps for all waveforms within an event
-    :param cfd: A CFD instance
+    :param cfd: A CFD instance for all channels or a list of CFD instances for each channel.
     :param events: Dict of lists containing event data
     :param i_event: Index of the considered event
     :param shift: if True: the timestamps will be shifted using their corresponding sample_t0 values
@@ -40,12 +40,12 @@ def _gauss(x, a, mu, sigma):
     return a * np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
 
 
-def find_diff_hist_stats(cfd: list[CFD] | CFD, events: dict, show: bool = True, return_gauss_stats: bool = True,
+def find_diff_hist_stats(cfd: CFD | list[CFD], events: dict, show: bool = True, return_gauss_stats: bool = True,
                          hist_range: tuple[float, float] = (-0.5, 1.5), hist_alpha: float = 1., hist_label: str = None,
                          plot_gauss: bool = True, time_step: float = TIME_STEP):
     """
     Find the mean and std of a histogram of differences between cfd timestamps in two channels
-    :param cfd: A CFD instance
+    :param cfd: A CFD instance for all channels or a list of CFD instances for each channel.
     :param events: Dict of lists containing event data
     :param show: If True: the histogram is shown (plt.show())
     :param return_gauss_stats: If True: the function returns the mean and std of a gaussian fitted to the histogram
