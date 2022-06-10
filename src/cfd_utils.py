@@ -40,6 +40,26 @@ def _gauss(x, a, mu, sigma):
     return a * np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
 
 
+def _get_gauss_stats(y, x=None, return_all=False):
+    if x is None:
+        x = np.arange(len(y))
+
+    # regular statistics
+    weighted_stats = DescrStatsW(x, weights=y, ddof=0)
+    mean_stat = weighted_stats.mean
+    std_stat = weighted_stats.std
+
+    # fitted gaussian statistics
+    popt, _ = curve_fit(_gauss, x, y, p0=[1, mean_stat, std_stat])
+    gauss_mean = popt[1]
+    gauss_std = abs(popt[2])
+
+    if return_all:
+        return mean_stat, std_stat, gauss_mean, gauss_std
+    else:
+        return gauss_mean
+
+
 def _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_range, hist_alpha, hist_label, plot_gauss):
     hist_data = plt.hist(timestamps_diff, bins=n_bins, range=hist_range, alpha=hist_alpha, label=hist_label)
 
@@ -48,15 +68,7 @@ def _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_ran
     x_step = (bins_x[1] - bins_x[0]) / 2
     bins_x += x_step
 
-    # regular statistics
-    weighted_stats = DescrStatsW(bins_x, weights=bins_y, ddof=0)
-    mean_stat = weighted_stats.mean
-    std_stat = weighted_stats.std
-
-    # fitted gaussian statistics
-    popt, _ = curve_fit(_gauss, bins_x, bins_y, p0=[1, mean_stat, std_stat])
-    gauss_mean = popt[1]
-    gauss_std = abs(popt[2])
+    mean_stat, std_stat, gauss_mean, gauss_std = _get_gauss_stats(bins_y, bins_x, return_all=True)
 
     if plot_gauss:
         gauss_y = norm.pdf(bins_x, gauss_mean, gauss_std)
