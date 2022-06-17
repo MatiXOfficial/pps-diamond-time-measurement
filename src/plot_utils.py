@@ -24,15 +24,16 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
     plt.title(title)
 
 
-def plot_history(history: dict[str, np.array], title: str, ymax: float = None):
+def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (10, 7)):
     """
     Plot the loss history from training a neural network
     :param history: dictionary with the data; history = model.fit(...).history
     :param title: plot title
     :param ymax: maximum of the plot
+    :param figsize: figure size
     :return:
     """
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=figsize)
 
     X = np.arange(1, len(history['loss']) + 1)
 
