@@ -22,6 +22,8 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
         plt.axvline(timestamp, c='red')
         title += f', t={timestamp:0.2f}'
     plt.title(title)
+    plt.xlabel('time')
+    plt.ylabel('voltage')
 
 
 def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (10, 7)):
