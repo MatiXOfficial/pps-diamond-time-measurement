@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', timestamp: float = None,
-                ylim: bool = False):
+                ylim: bool = False, xlabel='time [156.25 ps]', ylabel='voltage [V]'):
     """
     Plot a waveform
     :param ampl: y axis values
@@ -22,8 +22,8 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
         plt.axvline(timestamp, c='red')
         title += f', t={timestamp:0.2f}'
     plt.title(title)
-    plt.xlabel('time')
-    plt.ylabel('voltage')
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
 
 
 def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (10, 7)):
