@@ -132,5 +132,6 @@ def plot_diff_hist_stats(y_true, y_pred, show: bool = True, return_gauss_stats: 
     # histogram
     timestamps_diff = y_pred - y_true
 
+    plt.xlabel('time [156.25 ps]')
     return _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_range, hist_alpha, hist_label,
                             plot_gauss)

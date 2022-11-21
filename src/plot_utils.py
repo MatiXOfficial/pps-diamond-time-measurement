@@ -40,14 +40,15 @@ def plot_history(history: dict[str, np.array], title: str, ymax: float = None, f
     X = np.arange(1, len(history['loss']) + 1)
 
     plt.plot(X, history['loss'], label='train')
-    plt.plot(X, history['val_loss'], label='test')
+    plt.plot(X, history['val_loss'], label='validation')
 
     if ymax is not None:
         plt.ylim(0, ymax)
 
     plt.xlabel('epoch')
     plt.ylabel('loss')
-    plt.title(f"val loss {history[f'val_loss'].values[-1]:0.4f} (min: {min(history[f'val_loss'].values):0.4f})")
+    # plt.title(f"val loss {history[f'val_loss'].values[-1]:0.4f} (min: {min(history[f'val_loss'].values):0.4f})")
+    plt.title(f"validation loss: {min(history[f'val_loss'].values):0.4f}")
     plt.grid()
     plt.legend()
 
