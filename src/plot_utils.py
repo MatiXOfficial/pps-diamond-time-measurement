@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 
 def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', timestamp: float = None,
-                ylim: bool = False, xlabel='time [156.25 ps]', ylabel='voltage [V]'):
+                ylim: bool = False, xlabel='time [156.25 ps]', ylabel='voltage [V]', marker=None):
     """
     Plot a waveform
     :param ampl: y axis values
@@ -11,11 +11,12 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
     :param title:
     :param timestamp: a vertical line to mark. If None, no line is plotted
     :param ylim: if True, ylim is set to (-0.1, 1.1)
+    :param marker: Plot marker
     :return:
     """
     if time is None:
         time = np.arange(len(ampl))
-    plt.plot(time, ampl)
+    plt.plot(time, ampl, marker=marker)
     if ylim:
         plt.ylim(-0.1, 1.1)
     if timestamp is not None:
