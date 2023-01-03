@@ -51,11 +51,12 @@ def _get_gauss_stats(y, x=None, return_all=False):
 
     # fitted gaussian statistics
     popt, _ = curve_fit(_gauss, x, y, p0=[1, mean_stat, std_stat])
+    gauss_a = popt[0]
     gauss_mean = popt[1]
     gauss_std = abs(popt[2])
 
     if return_all:
-        return mean_stat, std_stat, gauss_mean, gauss_std
+        return mean_stat, std_stat, gauss_mean, gauss_std, gauss_a
     else:
         return gauss_mean
 
@@ -68,11 +69,11 @@ def _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_ran
     x_step = (bins_x[1] - bins_x[0]) / 2
     bins_x += x_step
 
-    mean_stat, std_stat, gauss_mean, gauss_std = _get_gauss_stats(bins_y, bins_x, return_all=True)
+    mean_stat, std_stat, gauss_mean, gauss_std, gauss_a = _get_gauss_stats(bins_y, bins_x, return_all=True)
 
     if plot_gauss:
         gauss_y = norm.pdf(bins_x, gauss_mean, gauss_std)
-        gauss_y *= np.max(bins_y) / np.max(gauss_y)
+        gauss_y *= gauss_a / np.max(gauss_y)
         plt.plot(bins_x, gauss_y, 'r--', linewidth=2)
 
     if show:
