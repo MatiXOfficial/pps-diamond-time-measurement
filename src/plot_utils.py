@@ -27,7 +27,7 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
     plt.ylabel(ylabel)
 
 
-def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (10, 7)):
+def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (8, 5.5)):
     """
     Plot the loss history from training a neural network
     :param history: dictionary with the data; history = model.fit(...).history
