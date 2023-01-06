@@ -27,13 +27,15 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
     plt.ylabel(ylabel)
 
 
-def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (8, 5.5)):
+def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (8, 5.5),
+                 savefig: bool = None):
     """
     Plot the loss history from training a neural network
     :param history: dictionary with the data; history = model.fit(...).history
     :param title: plot title
     :param ymax: maximum of the plot
     :param figsize: figure size
+    :param savefig: If else than None, plt will be saved with savefig as the path
     :return:
     """
     plt.figure(figsize=figsize)
@@ -54,4 +56,7 @@ def plot_history(history: dict[str, np.array], title: str, ymax: float = None, f
     plt.legend()
 
     plt.suptitle(title)
+    
+    if savefig is not None:
+        plt.savefig(savefig)
     plt.show()
