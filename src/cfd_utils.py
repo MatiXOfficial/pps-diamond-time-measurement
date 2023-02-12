@@ -95,7 +95,7 @@ def _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_ran
 def find_diff_hist_stats(cfd: CFD | list[CFD], events: dict, show: bool = True, return_gauss_stats: bool = True,
                          n_bins: int = 100, hist_range: tuple[float, float] = (-0.5, 1.5), hist_alpha: float = 1.,
                          hist_label: str = None, plot_gauss: bool = True, time_step: float = TIME_STEP,
-                         return_pcov: bool = False):
+                         return_pcov: bool = False, log: bool = False):
     """
     Find the mean and std of a histogram of differences between cfd timestamps in two channels
     :param cfd: A CFD instance for all channels or a list of CFD instances for each channel.
@@ -109,13 +109,24 @@ def find_diff_hist_stats(cfd: CFD | list[CFD], events: dict, show: bool = True, 
     :param plot_gauss: If True: a fitted Gaussian is plotted with the histogram
     :param time_step: time step between waveform samples
     :param return_pcov: If True, the covariance matrix of the Gaussian fit is returned
+    :param log: If True, warnings are printed in the case of None returned by CFD
     :return: tuple: (mean, std) or (mean, std, cov) of the histogram
     """
     N = len(events['sample_t0'])
 
     # histogram
-    timestamps = np.array(
-        [calculate_event_cfd(cfd, events, i, shift=True, time_step=time_step, log=True) for i in range(N)])
+    timestamps = []
+    nones = 0
+    for i in range(N):
+        try:
+            timestamps.append(calculate_event_cfd(cfd, events, i, shift=True, time_step=time_step, log=log))
+        except TypeError:
+            nones += 1
+
+    if log and nones > 0:
+        print(f'Skipped {nones} Nones')
+
+    timestamps = np.array(timestamps)
     timestamps_diff = timestamps[:, 1] - timestamps[:, 0]
 
     return _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_range, hist_alpha, hist_label,
