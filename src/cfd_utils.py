@@ -6,10 +6,12 @@ from statsmodels.stats.weightstats import DescrStatsW
 
 from src.cfd import CFD
 
+from typing import List, Union, Tuple
+
 TIME_STEP = 0.15625
 
 
-def calculate_event_cfd(cfd: CFD | list[CFD], events: dict, i_event: int, shift: bool = True,
+def calculate_event_cfd(cfd: Union[CFD, List[CFD]], events: dict, i_event: int, shift: bool = True,
                         time_step: float = TIME_STEP, log: bool = False):
     """
     Calculate the cfd timestamps for all waveforms within an event
@@ -92,8 +94,8 @@ def _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_ran
     return tuple(retval)
 
 
-def find_diff_hist_stats(cfd: CFD | list[CFD], events: dict, show: bool = True, return_gauss_stats: bool = True,
-                         n_bins: int = 100, hist_range: tuple[float, float] = (-0.5, 1.5), hist_alpha: float = 1.,
+def find_diff_hist_stats(cfd: Union[CFD, List[CFD]], events: dict, show: bool = True, return_gauss_stats: bool = True,
+                         n_bins: int = 100, hist_range: Tuple[float, float] = (-0.5, 1.5), hist_alpha: float = 1.,
                          hist_label: str = None, plot_gauss: bool = True, time_step: float = TIME_STEP,
                          return_pcov: bool = False, log: bool = False):
     """
@@ -134,7 +136,7 @@ def find_diff_hist_stats(cfd: CFD | list[CFD], events: dict, show: bool = True, 
 
 
 def plot_diff_hist_stats(y_true, y_pred, show: bool = True, return_gauss_stats: bool = True, n_bins: int = 100,
-                         hist_range: tuple[float, float] = (-0.5, 1.5), hist_alpha: float = 1., hist_label: str = None,
+                         hist_range: Tuple[float, float] = (-0.5, 1.5), hist_alpha: float = 1., hist_label: str = None,
                          plot_gauss: bool = True, return_pcov: bool = False):
     """
     Find the mean and std of a histogram of differences between y_true and y_pred timestamps

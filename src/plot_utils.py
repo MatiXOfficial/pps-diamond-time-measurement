@@ -1,8 +1,10 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
+from typing import List, Dict, Tuple
 
-def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', timestamp: float = None,
+
+def plot_sample(ampl: List[float], time: List[float] = None, title: str = '', timestamp: float = None,
                 ylim: bool = False, xlabel='time [156.25 ps]', ylabel='voltage [V]', marker=None):
     """
     Plot a waveform
@@ -27,7 +29,7 @@ def plot_sample(ampl: list[float], time: list[float] = None, title: str = '', ti
     plt.ylabel(ylabel)
 
 
-def plot_history(history: dict[str, np.array], title: str, ymax: float = None, figsize: tuple[float, float] = (8, 5.5),
+def plot_history(history: Dict[str, np.array], title: str, ymax: float = None, figsize: Tuple[float, float] = (8, 5.5),
                  savefig: bool = None, plt_font_size: int = None):
     """
     Plot the loss history from training a neural network
