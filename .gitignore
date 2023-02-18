@@ -1,7 +1,14 @@
 *.ipynb_checkpoints
 *root
+.vscode
 *__pycache__
 .idea
 *.npy
 *.npz
 *.pdf
+
+venv
+.ipynb
+scripts/model_weights
+
+scripts/test/output
