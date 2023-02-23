@@ -10,5 +10,3 @@
 venv
 .ipynb
 scripts/model_weights
-
-scripts/test/output

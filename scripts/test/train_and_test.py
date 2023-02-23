@@ -125,7 +125,7 @@ def train_model(model, X_train=X_train, y_train=y_train, X_test=X_test, y_test=y
     
     return history
 
-history = train_model(model, y_train=Y_heatmap_train, y_test=Y_heatmap_test, lr=0.001, name='test_unet_model', train=False, n_epochs=2000, lr_patience=50, es_patience=200, loss_weights=100)
+history = train_model(model, y_train=Y_heatmap_train, y_test=Y_heatmap_test, lr=0.001, name='test_unet_model', train=True, n_epochs=2000, lr_patience=50, es_patience=200, loss_weights=100, verbose=2)
 
 ########## Predict ##########
 print('Predict...')
