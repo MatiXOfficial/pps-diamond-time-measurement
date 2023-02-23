@@ -1,0 +1,149 @@
+ gcccore/10.2.0 loaded.
+ zlib/1.2.11-gcccore-10.2.0 loaded.
+ binutils/2.35-gcccore-10.2.0 loaded.
+ gcc/10.2.0 loaded.
+ cudacore/11.1.1 loaded.
+ cuda/11.1.1-gcc-10.2.0 loaded.
+ gcccuda/2020b loaded.
+ numactl/2.0.13-gcccore-10.2.0 loaded.
+ xz/5.2.5-gcccore-10.2.0 loaded.
+ libxml2/2.9.10-gcccore-10.2.0 loaded.
+ libpciaccess/0.16-gcccore-10.2.0 loaded.
+ hwloc/2.2.0-gcccore-10.2.0 loaded.
+ libevent/2.1.12-gcccore-10.2.0 loaded.
+ check/0.15.2-gcccore-10.2.0 loaded.
+ gdrcopy/2.1-gcccore-10.2.0-cuda-11.1.1 loaded.
+ ucx/1.9.0-gcccore-10.2.0-cuda-11.1.1 loaded.
+ libfabric/1.11.0-gcccore-10.2.0 loaded.
+ pmix/3.1.5-gcccore-10.2.0 loaded.
+ openmpi/4.0.5-gcccuda-2020b loaded.
+ openblas/0.3.12-gcc-10.2.0 loaded.
+ gompic/2020b loaded.
+ fftw/3.3.8-gompic-2020b loaded.
+ scalapack/2.1.0-gompic-2020b loaded.
+ fosscuda/2020b loaded.
+ cudnn/8.1.0.77-cuda-11.1.1 loaded.
+ nccl/2.8.3-gcccore-10.2.0-cuda-11.1.1 loaded.
+ bzip2/1.0.8-gcccore-10.2.0 loaded.
+ ncurses/6.2-gcccore-10.2.0 loaded.
+ libreadline/8.0-gcccore-10.2.0 loaded.
+ tcl/8.6.10-gcccore-10.2.0 loaded.
+ sqlite/3.33.0-gcccore-10.2.0 loaded.
+ gmp/6.2.0-gcccore-10.2.0 loaded.
+ libffi/3.3-gcccore-10.2.0 loaded.
+ python/3.8.6-gcccore-10.2.0 loaded.
+ pybind11/2.6.0-gcccore-10.2.0 loaded.
+ scipy-bundle/2020.11-fosscuda-2020b loaded.
+ szip/2.1.1-gcccore-10.2.0 loaded.
+ hdf5/1.10.7-gompic-2020b loaded.
+ h5py/3.1.0-fosscuda-2020b loaded.
+ curl/7.72.0-gcccore-10.2.0 loaded.
+ double-conversion/3.1.5-gcccore-10.2.0 loaded.
+ flatbuffers/1.12.0-gcccore-10.2.0 loaded.
+ giflib/5.2.1-gcccore-10.2.0 loaded.
+ icu/67.1-gcccore-10.2.0 loaded.
+ jsoncpp/1.9.4-gcccore-10.2.0 loaded.
+ nasm/2.15.05-gcccore-10.2.0 loaded.
+ libjpeg-turbo/2.0.5-gcccore-10.2.0 loaded.
+ lmdb/0.9.24-gcccore-10.2.0 loaded.
+ nsync/1.24.0-gcccore-10.2.0 loaded.
+ pcre/8.44-gcccore-10.2.0 loaded.
+ protobuf/3.14.0-gcccore-10.2.0 loaded.
+ protobuf-python/3.14.0-gcccore-10.2.0 loaded.
+ flatbuffers-python/1.12-gcccore-10.2.0 loaded.
+ typing-extensions/3.7.4.3-gcccore-10.2.0 loaded.
+ libpng/1.6.37-gcccore-10.2.0 loaded.
+ snappy/1.1.8-gcccore-10.2.0 loaded.
+ tensorflow/2.8.0-fosscuda-2020b loaded.
+Loading parameters...
+Loaded parameter set: 1
+Loading dataset...
+(19594, 64) (19594,)
+Preprocessing...
+Preprocessed data
+(15675, 48) (3919, 48) (15675,) (3919,)
+Training...
+Model summary
+Model: "model"
+__________________________________________________________________________________________________
+ Layer (type)                   Output Shape         Param #     Connected to                     
+==================================================================================================
+ input_1 (InputLayer)           [(None, 48)]         0           []                               
+                                                                                                  
+ reshape (Reshape)              (None, 48, 1)        0           ['input_1[0][0]']                
+                                                                                                  
+ conv1d (Conv1D)                (None, 48, 8)        32          ['reshape[0][0]']                
+                                                                                                  
+ conv1d_1 (Conv1D)              (None, 48, 8)        200         ['conv1d[0][0]']                 
+                                                                                                  
+ max_pooling1d (MaxPooling1D)   (None, 24, 8)        0           ['conv1d_1[0][0]']               
+                                                                                                  
+ conv1d_2 (Conv1D)              (None, 24, 16)       400         ['max_pooling1d[0][0]']          
+                                                                                                  
+ conv1d_3 (Conv1D)              (None, 24, 16)       784         ['conv1d_2[0][0]']               
+                                                                                                  
+ max_pooling1d_1 (MaxPooling1D)  (None, 12, 16)      0           ['conv1d_3[0][0]']               
+                                                                                                  
+ conv1d_4 (Conv1D)              (None, 12, 32)       1568        ['max_pooling1d_1[0][0]']        
+                                                                                                  
+ conv1d_5 (Conv1D)              (None, 12, 32)       3104        ['conv1d_4[0][0]']               
+                                                                                                  
+ max_pooling1d_2 (MaxPooling1D)  (None, 6, 32)       0           ['conv1d_5[0][0]']               
+                                                                                                  
+ conv1d_6 (Conv1D)              (None, 6, 64)        6208        ['max_pooling1d_2[0][0]']        
+                                                                                                  
+ conv1d_7 (Conv1D)              (None, 6, 64)        12352       ['conv1d_6[0][0]']               
+                                                                                                  
+ up_sampling1d (UpSampling1D)   (None, 12, 64)       0           ['conv1d_7[0][0]']               
+                                                                                                  
+ conv1d_8 (Conv1D)              (None, 12, 32)       2080        ['up_sampling1d[0][0]']          
+                                                                                                  
+ concatenate (Concatenate)      (None, 12, 64)       0           ['conv1d_5[0][0]',               
+                                                                  'conv1d_8[0][0]']               
+                                                                                                  
+ conv1d_9 (Conv1D)              (None, 12, 32)       6176        ['concatenate[0][0]']            
+                                                                                                  
+ conv1d_10 (Conv1D)             (None, 12, 32)       3104        ['conv1d_9[0][0]']               
+                                                                                                  
+ up_sampling1d_1 (UpSampling1D)  (None, 24, 32)      0           ['conv1d_10[0][0]']              
+                                                                                                  
+ conv1d_11 (Conv1D)             (None, 24, 16)       528         ['up_sampling1d_1[0][0]']        
+                                                                                                  
+ concatenate_1 (Concatenate)    (None, 24, 32)       0           ['conv1d_3[0][0]',               
+                                                                  'conv1d_11[0][0]']              
+                                                                                                  
+ conv1d_12 (Conv1D)             (None, 24, 16)       1552        ['concatenate_1[0][0]']          
+                                                                                                  
+ conv1d_13 (Conv1D)             (None, 24, 16)       784         ['conv1d_12[0][0]']              
+                                                                                                  
+ up_sampling1d_2 (UpSampling1D)  (None, 48, 16)      0           ['conv1d_13[0][0]']              
+                                                                                                  
+ conv1d_14 (Conv1D)             (None, 48, 8)        136         ['up_sampling1d_2[0][0]']        
+                                                                                                  
+ concatenate_2 (Concatenate)    (None, 48, 16)       0           ['conv1d_1[0][0]',               
+                                                                  'conv1d_14[0][0]']              
+                                                                                                  
+ conv1d_15 (Conv1D)             (None, 48, 8)        392         ['concatenate_2[0][0]']          
+                                                                                                  
+ conv1d_16 (Conv1D)             (None, 48, 8)        200         ['conv1d_15[0][0]']              
+                                                                                                  
+ conv1d_17 (Conv1D)             (None, 48, 1)        9           ['conv1d_16[0][0]']              
+                                                                                                  
+ flatten (Flatten)              (None, 48)           0           ['conv1d_17[0][0]']              
+                                                                                                  
+==================================================================================================
+Total params: 39,609
+Trainable params: 39,609
+Non-trainable params: 0
+__________________________________________________________________________________________________
+/net/people/plgrid/plgkocotm/.local/lib/python3.8/site-packages/statsmodels/stats/weightstats.py:196: RuntimeWarning: invalid value encountered in sqrt
+  return np.sqrt(self.var)
+/net/software/testing/software/SciPy-bundle/2020.11-fosscuda-2020b/lib/python3.8/site-packages/scipy/optimize/minpack.py:828: OptimizeWarning: Covariance of the parameters could not be estimated
+  warnings.warn('Covariance of the parameters could not be estimated',
+/net/software/testing/software/Python/3.8.6-GCCcore-10.2.0/bin/python: Error while finding module specification for 'scripts.test_with_params.train_and_test.py' (ModuleNotFoundError: __path__ attribute not found on 'scripts.test_with_params.train_and_test' while trying to find 'scripts.test_with_params.train_and_test.py')
+None
+Predict...
+MSE: 0.1684773200813979
+Validate...
+std: 59.52
+Elapsed 11.283741997 seconds
