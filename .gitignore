@@ -10,3 +10,7 @@
 venv
 .ipynb
 scripts/model_weights
+
+scripts/unet_tuning_ch10/output/[0-9]*
+scripts/unet_tuning_ch17/output/[0-9]*
+scripts/unet_tuning_ch30/output/[0-9]*
