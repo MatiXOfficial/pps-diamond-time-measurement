@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
@@ -33,12 +32,12 @@ LR = 0.01
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
-MAX_TRIALS = 30
+MAX_TRIALS = 50
 EXECUTIONS_PER_TRIAL = 2
 
-TOP_N = 5
+TOP_N = 6
 CROSSVAL_N_CV = 5
-CROSSVAL_N_EXEC = 2
+CROSSVAL_N_EXEC = 3
 LOSS_WEIGHT = 1000
 
 ########## Load data ##########
@@ -70,14 +69,17 @@ print('Model...')
 
 
 def model_builder(hp: kt.HyperParameters) -> keras.Model:
-    hp_n_hidden_layers = hp.Int("n_hidden_layers", min_value=1, max_value=8, step=1, default=2)
-    hp_units_mult = hp.Choice("units_mult", values=[1, 2, 4, 8, 16, 32], default=4)
+    hp_n_hidden_layers = hp.Int("n_hidden_layers", min_value=1, max_value=8, step=1, default=4)
+    hp_units_mult = hp.Choice("units_mult", values=[1, 2, 4, 8, 16, 32, 64], default=16)
+    hp_unit_decrease_factor = None
+    if hp_n_hidden_layers > 0:
+        hp_unit_decrease_factor = hp.Choice("unit_decrease_factor", values=[1.0, 1.5, 2.0], default=1.5)
     hp_batch_normalization = hp.Boolean("batch_normalization", default=False)
     hp_input_batch_normalization = hp.Boolean("input_batch_normalization", default=False)
-    hp_dropout = hp.Choice("dropout", values=[0.0, 0.2, 0.5])
+    hp_dropout = hp.Choice("dropout", values=[0.0, 0.2, 0.5], default=0.0)
 
-    model = bare_model_builder(hp_n_hidden_layers, hp_units_mult, hp_batch_normalization, hp_input_batch_normalization,
-                               hp_dropout)
+    model = bare_model_builder(hp_n_hidden_layers, hp_units_mult, hp_unit_decrease_factor, hp_batch_normalization,
+                               hp_input_batch_normalization, hp_dropout)
     model.compile(loss='mse', optimizer=optimizers.Adam(LR), loss_weights=LOSS_WEIGHT)
     return model
 
