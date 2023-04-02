@@ -63,3 +63,64 @@ def convnet_builder(hp_n_conv_blocks: int, hp_n_conv_layers: int, hp_filters_mul
     model.add(layers.Dense(1))
 
     return model
+
+
+def _conv_block(x, n_filters, kernel_size: int = 2, n_conv_layers: int = 1, batch_normalization: bool = False,
+                spatial_dropout: float = 0):
+    for _ in range(n_conv_layers):
+        x = layers.Conv1D(n_filters, kernel_size, activation='relu', padding='same')(x)
+        if batch_normalization:
+            x = layers.BatchNormalization()(x)
+        if spatial_dropout > 0:
+            x = layers.SpatialDropout1D(spatial_dropout)(x)
+    skip = x
+    x = layers.MaxPooling1D()(x)
+    return skip, x
+
+
+def _deconv_block(x, skip, n_filters, kernel_size: int = 3, n_conv_layers: int = 1, batch_normalization: bool = False,
+                  spatial_dropout: float = 0):
+    x = layers.UpSampling1D()(x)
+    x = layers.Conv1D(n_filters, 1, activation='linear')(x)
+    x = layers.Concatenate()([skip, x])
+    for _ in range(n_conv_layers):
+        x = layers.Conv1D(n_filters, kernel_size, activation='relu', padding='same')(x)
+        if batch_normalization:
+            x = layers.BatchNormalization()(x)
+        if spatial_dropout > 0:
+            x = layers.SpatialDropout1D(spatial_dropout)(x)
+    return x
+
+
+def unet_builder(hp_unet_depth: int, hp_n_conv_layers: int, hp_filters_mult: int, hp_spatial_dropout: float,
+                 hp_batch_normalization: bool, hp_input_batch_normalization: bool) -> keras.Model:
+    inputs = layers.Input(48)
+    x = layers.Reshape((-1, 1))(inputs)
+    if hp_input_batch_normalization:
+        x = layers.BatchNormalization()(x)
+
+    n_filters = 8 * hp_filters_mult
+    skip_layers = []
+
+    # Encoder
+    for _ in range(hp_unet_depth):
+        skip, x = _conv_block(x, n_filters, n_conv_layers=hp_n_conv_layers, batch_normalization=hp_batch_normalization,
+                              spatial_dropout=hp_spatial_dropout)
+        n_filters *= 2
+        skip_layers.append(skip)
+
+    # Bottleneck
+    x, _ = _conv_block(x, n_filters)
+
+    # Decoder
+    for _ in range(hp_unet_depth):
+        n_filters //= 2
+        x = _deconv_block(x, skip_layers.pop(), n_filters, n_conv_layers=hp_n_conv_layers,
+                          batch_normalization=hp_batch_normalization, spatial_dropout=hp_spatial_dropout)
+
+    x = layers.Conv1D(1, 1, activation='linear')(x)
+
+    outputs = layers.Flatten()(x)
+    model = keras.Model(inputs, outputs)
+
+    return model

@@ -36,6 +36,7 @@ TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
 CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
+ES_MIN_DELTA = 0.01
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
@@ -104,7 +105,7 @@ print('Example summary')
 print(model_builder(kt.HyperParameters()).summary())
 
 model_callbacks = [
-    callbacks.EarlyStopping(patience=50, min_delta=0.01),
+    callbacks.EarlyStopping(patience=50, min_delta=ES_MIN_DELTA),
     callbacks.ReduceLROnPlateau(monitor='loss', factor=0.9, patience=10)
 ]
 

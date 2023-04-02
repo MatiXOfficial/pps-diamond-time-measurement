@@ -11,7 +11,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras import callbacks
 import keras_tuner as kt
 
-from src.models import mlp_builder as bare_model_builder
+from src.models import unet_builder as bare_model_builder
 from src.utils import augmentation_random_cut
 from src.cross_validator import KerasTunerCrossValidator
 
@@ -31,12 +31,12 @@ N_BASELINE = 20
 
 OVERWRITE = True
 
-PROJECT_NAME = 'mlp'
+PROJECT_NAME = 'unet'
 TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
 CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
-ES_MIN_DELTA = 0.01
+ES_MIN_DELTA = 0.001
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
@@ -67,8 +67,18 @@ all_X /= all_X.max(axis=1)[:, None]
 
 X_aug, y_aug = augmentation_random_cut(all_X, all_y, 8, seed=42, apply=True)
 
-X_train_default, _, y_train_default, _ = train_test_split(X_aug, y_aug, test_size=0.2, random_state=42)
-X_train, X_val, y_train, y_val = train_test_split(X_train_default, y_train_default, test_size=0.2, random_state=42)
+X_train_default, _, y_train_default_t, _ = train_test_split(X_aug, y_aug, test_size=0.2, random_state=42)
+X_train, X_val, y_train_t, y_val_t = train_test_split(X_train_default, y_train_default_t, test_size=0.2, random_state=42)
+
+
+def gaussian_kernel(mu, sigma=1., n=48):
+    x = np.arange(0, n)
+    return np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
+
+
+y_train_default = np.array([gaussian_kernel(y) for y in y_train_default_t])
+y_train = np.array([gaussian_kernel(y) for y in y_train_t])
+y_val = np.array([gaussian_kernel(y) for y in y_val_t])
 
 print(X_train.shape, X_val.shape, y_train.shape, y_val.shape)
 
@@ -77,17 +87,15 @@ print('Model...')
 
 
 def model_builder(hp: kt.HyperParameters) -> keras.Model:
-    hp_n_hidden_layers = hp.Int("n_hidden_layers", min_value=1, max_value=8, step=1, default=4)
-    hp_units_mult = hp.Choice("units_mult", values=[1, 2, 4, 8, 16, 32, 64], default=16)
-    hp_unit_decrease_factor = None
-    if hp_n_hidden_layers > 0:
-        hp_unit_decrease_factor = hp.Choice("unit_decrease_factor", values=[1.0, 1.5, 2.0], default=1.5)
+    hp_unet_depth = hp.Int("unet_depth", min_value=0, max_value=4, step=1, default=2)
+    hp_n_conv_layers = hp.Int("n_conv_layers", min_value=1, max_value=3, step=1)
+    hp_filters_mult = hp.Choice("conv_filters_mult", values=[1, 2, 4, 8], default=2)
+    hp_spatial_dropout = hp.Choice("conv_spatial_dropout", values=[0.0, 0.1, 0.2])
     hp_batch_normalization = hp.Boolean("batch_normalization", default=False)
     hp_input_batch_normalization = hp.Boolean("input_batch_normalization", default=False)
-    hp_dropout = hp.Choice("dropout", values=[0.0, 0.2, 0.5], default=0.0)
 
-    model = bare_model_builder(hp_n_hidden_layers, hp_units_mult, hp_unit_decrease_factor, hp_batch_normalization,
-                               hp_input_batch_normalization, hp_dropout)
+    model = bare_model_builder(hp_unet_depth, hp_n_conv_layers, hp_filters_mult, hp_spatial_dropout,
+                               hp_batch_normalization, hp_input_batch_normalization)
     model.compile(loss='mse', optimizer=optimizers.Adam(LR), loss_weights=LOSS_WEIGHT)
     return model
 

@@ -16,6 +16,7 @@ pip install --no-deps keras-tuner
 ```bash
 sbatch scripts/model_selection/mlp_executor.sh
 sbatch scripts/model_selection/convnet_executor.sh
+sbatch scripts/model_selection/unet_executor.sh
 ```
 
 ### Run interactively
@@ -26,4 +27,5 @@ source venv/bin/activate
 
 python -m scripts.model_selection.mlp
 python -m scripts.model_selection.convnet
+python -m scripts.model_selection.unet
 ```
