@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -A plgccbmc11-gpu
 #SBATCH -p plgrid-gpu-v100
-#SBATCH --time=4:00:00
+#SBATCH --time=3:00:00
 #SBATCH --gres=gpu:1
 #SBATCH --output=scripts/model_selection/output/logs_convnet.out
 
@@ -10,7 +10,7 @@ source venv/bin/activate
 
 START=$(date +%s.%N)
 
-python -m scripts.model_selection.convnet.py
+python -m scripts.model_selection.convnet
 
 END=$(date +%s.%N)
 DIFF=$(echo "$END - $START" | bc)

@@ -1,9 +1,9 @@
+import os
+
 import numpy as np
 import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-
-from src.cross_validator import KerasTunerCrossValidator
 
 tf.get_logger().setLevel('ERROR')
 from tensorflow import keras
@@ -13,10 +13,18 @@ import keras_tuner as kt
 
 from src.models import mlp_builder as bare_model_builder
 from src.utils import augmentation_random_cut
+from src.cross_validator import KerasTunerCrossValidator
 
 ########## Setup ##########
 print('Setup...')
 PWD = '.'
+if os.getenv('SCRATCH'):
+    PWD_TMP = os.getenv('SCRATCH') + '/pps-diamond-time-measurement'
+else:
+    PWD_TMP = '.'
+
+print('PWD:', PWD)
+print('PWD_TMP:', PWD_TMP)
 
 CHANNEL = 17
 N_BASELINE = 20
@@ -24,9 +32,8 @@ N_BASELINE = 20
 OVERWRITE = True
 
 PROJECT_NAME = 'mlp'
-DATASET_PATH = PWD + '/data/dataset/dataset.pkl'
-TRIALS_DIR = PWD + f'/data/model_selection/channel_{CHANNEL}/tuner'
-CROSSVAL_DIR = PWD + f'/data/model_selection/channel_{CHANNEL}/cross_val'
+TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
+CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
 
@@ -88,7 +95,7 @@ print('Example summary')
 print(model_builder(kt.HyperParameters()).summary())
 
 model_callbacks = [
-    callbacks.EarlyStopping(patience=50),
+    callbacks.EarlyStopping(patience=50, min_delta=0.01),
     callbacks.ReduceLROnPlateau(monitor='loss', factor=0.9, patience=10)
 ]
 
