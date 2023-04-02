@@ -1,6 +1,6 @@
 import pickle
 from pathlib import Path
-from typing import List, Union, Callable
+from typing import List, Union, Callable, Dict
 
 import keras_tuner as kt
 import numpy as np
@@ -35,7 +35,7 @@ class CrossValidator:
             callbacks.ReduceLROnPlateau(monitor='loss', factor=0.9, patience=reduce_patience)
         ]
 
-    def __call__(self) -> dict[int, List[float]]:
+    def __call__(self) -> Dict[int, List[float]]:
         """Return cross-val scores for each of the top-n models"""
         project_dir = self._build_project_dir()
 
@@ -96,12 +96,10 @@ class CrossValidator:
     def _print_model_log(self, i_builder: int) -> None:
         if self.model_names is not None:
             # display(HTML(f"<h3>Model: {self.model_names[i_builder]}</h3>"))
-            print(f"Model: {self.model_names[i_builder]}")
-            print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+            print(f"========== Model: {self.model_names[i_builder]} ==========")
         else:
             # display(HTML(f"<h3>Model {i_builder}</h3>"))
-            print(f"Model {i_builder}")
-            print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+            print(f"========== Model {i_builder} ==========")
         model_tmp = self.model_builders[i_builder]()
         print('Number of parameters:', model_tmp.count_params())
 
@@ -129,8 +127,7 @@ class KerasTunerCrossValidator(CrossValidator):
 
     def _print_model_log(self, i_builder: int) -> None:
         # display(HTML(f"<h3>Model {i_builder}</h3>"))
-        print(f"Model {i_builder}")
-        print('OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO')
+        print(f"========== Model {i_builder} ==========")
         hp = self.tuner.get_best_hyperparameters(i_builder + 1)[i_builder]
         print(hp.get_config()['values'])
         model_tmp = self.model_builders[i_builder]()

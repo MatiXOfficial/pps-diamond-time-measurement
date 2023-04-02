@@ -22,6 +22,8 @@ PWD = '.'
 CHANNEL = 17
 N_BASELINE = 20
 
+OVERWRITE = True
+
 PROJECT_NAME = 'mlp'
 DATASET_PATH = PWD + '/data/dataset/dataset.pkl'
 TRIALS_DIR = PWD + f'/data/model_selection/channel_{CHANNEL}/tuner'
@@ -31,12 +33,12 @@ LR = 0.01
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
-MAX_TRIALS = 4
-EXECUTIONS_PER_TRIAL = 1
+MAX_TRIALS = 30
+EXECUTIONS_PER_TRIAL = 2
 
-TOP_N = 2
-CROSSVAL_N_CV = 3
-CROSSVAL_N_EXEC = 1
+TOP_N = 5
+CROSSVAL_N_CV = 5
+CROSSVAL_N_EXEC = 2
 LOSS_WEIGHT = 1000
 
 ########## Load data ##########
@@ -68,7 +70,7 @@ print('Model...')
 
 
 def model_builder(hp: kt.HyperParameters) -> keras.Model:
-    hp_n_hidden_layers = hp.Int("n_hidden_layers", min_value=1, max_value=6, step=1, default=2)
+    hp_n_hidden_layers = hp.Int("n_hidden_layers", min_value=1, max_value=8, step=1, default=2)
     hp_units_mult = hp.Choice("units_mult", values=[1, 2, 4, 8, 16, 32], default=4)
     hp_batch_normalization = hp.Boolean("batch_normalization", default=False)
     hp_input_batch_normalization = hp.Boolean("input_batch_normalization", default=False)
@@ -93,10 +95,10 @@ print('Tuning...')
 
 bayesian_tuner = kt.BayesianOptimization(model_builder, objective='val_loss', executions_per_trial=EXECUTIONS_PER_TRIAL,
                                          max_trials=MAX_TRIALS, directory=TRIALS_DIR, project_name=PROJECT_NAME,
-                                         overwrite=False)
+                                         overwrite=OVERWRITE)
 
 bayesian_tuner.search(X_train, y_train, validation_data=[X_val, y_val], epochs=N_EPOCHS, callbacks=model_callbacks,
-                      batch_size=BATCH_SIZE, verbose=0)
+                      batch_size=BATCH_SIZE, verbose=3)
 
 print('Best models')
 for i, hyperparameters in enumerate(bayesian_tuner.get_best_hyperparameters(TOP_N)):
@@ -111,7 +113,7 @@ print('Cross-validation...')
 cross_validator = KerasTunerCrossValidator(bayesian_tuner, X_train_default, y_train_default, model_builder,
                                            directory=CROSSVAL_DIR, project_name=PROJECT_NAME,
                                            n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, n_top=TOP_N,
-                                           n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC, overwrite=False)
+                                           n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC, overwrite=OVERWRITE)
 model_scores = cross_validator()
 
 mean_scores = [f"{np.mean(scores):0.2f}" for scores in model_scores.values()]
