@@ -6,13 +6,12 @@ import tensorflow as tf
 from keras.backend import count_params
 from sklearn.model_selection import train_test_split
 
-from src.cfd_utils import plot_difference_hist, _get_gauss_stats, TIME_STEP
-
 tf.get_logger().setLevel('ERROR')
 from tensorflow.keras import optimizers
 
 from src.models import optimal_model_builders
 from src.utils import augmentation_random_cut
+from src.cfd_utils import plot_difference_hist, _get_gauss_stats, TIME_STEP
 from src.cross_validator import CrossValidator
 
 ########## Setup ##########
@@ -36,15 +35,16 @@ TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
 CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
-ES_MIN_DELTA = 0.01
+ES_MIN_DELTA_REGULAR = 0.1
+ES_MIN_DELTA_HEATMAP = 0.1
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
 
 CROSSVAL_N_CV = 5
 CROSSVAL_N_EXEC = 3
-REGULAR_LOSS_WEIGHT = 1000
-HEATMAP_LOSS_WEIGHT = 1000
+LOSS_WEIGHT_REGULAR = 1000
+LOSS_WEIGHT_HEATMAP = 10_000
 
 ########## Load data ##########
 print('Loading dataset...')
@@ -81,10 +81,10 @@ print(y_train_heatmap.shape)
 
 
 ########## Models ##########
-def compile_wrapper(builder):
+def compile_wrapper(builder, loss_weight):
     def compiled_builder():
         model = builder()
-        model.compile(loss='mse', optimizer=optimizers.Adam(LR), loss_weights=LOSS_WEIGHT)
+        model.compile(loss='mse', optimizer=optimizers.Adam(LR), loss_weights=loss_weight)
         return model
 
     return compiled_builder
@@ -101,13 +101,13 @@ def regular_metric(y_true, y_pred):
 
 
 regular_model_builders = [
-    compile_wrapper(optimal_model_builders.mlp),
-    compile_wrapper(optimal_model_builders.convnet)
+    compile_wrapper(optimal_model_builders.mlp, loss_weight=LOSS_WEIGHT_REGULAR),
+    compile_wrapper(optimal_model_builders.convnet, loss_weight=LOSS_WEIGHT_REGULAR)
 ]
 regular_model_names = ['mlp', 'convnet']
 
 cross_validator = CrossValidator(regular_model_builders, X_train, y_train, CROSSVAL_DIR, PROJECT_NAME,
-                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, n_cv=CROSSVAL_N_CV,
+                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA_REGULAR, n_cv=CROSSVAL_N_CV,
                                  n_executions=CROSSVAL_N_EXEC, model_names=regular_model_names,
                                  eval_metric=regular_metric, overwrite=OVERWRITE)
 
@@ -134,11 +134,11 @@ def heatmap_metric(y_heatmap_true, y_heatmap_pred):
     return std * 1000  # ps
 
 
-heatmap_model_builders = [compile_wrapper(optimal_model_builders.unet)]
+heatmap_model_builders = [compile_wrapper(optimal_model_builders.unet, loss_weight=LOSS_WEIGHT_HEATMAP)]
 heatmap_model_names = ['unet']
 
 cross_validator = CrossValidator(heatmap_model_builders, X_train, y_train_heatmap, CROSSVAL_DIR, PROJECT_NAME,
-                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, n_cv=CROSSVAL_N_CV,
+                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA_HEATMAP, n_cv=CROSSVAL_N_CV,
                                  n_executions=CROSSVAL_N_EXEC, model_names=heatmap_model_names,
                                  eval_metric=heatmap_metric, overwrite=False)
 

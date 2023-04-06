@@ -29,24 +29,24 @@ print('PWD_TMP:', PWD_TMP)
 CHANNEL = 17
 N_BASELINE = 20
 
-OVERWRITE = True
+OVERWRITE = False
 
 PROJECT_NAME = 'unet'
 TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
 CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
-ES_MIN_DELTA = 0.001
+ES_MIN_DELTA = 0.1
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
-MAX_TRIALS = 50
+MAX_TRIALS = 30
 EXECUTIONS_PER_TRIAL = 2
 
-TOP_N = 6
+TOP_N = 5
 CROSSVAL_N_CV = 5
 CROSSVAL_N_EXEC = 3
-LOSS_WEIGHT = 1000
+LOSS_WEIGHT = 10_000
 
 ########## Load data ##########
 print('Loading dataset...')
@@ -130,7 +130,7 @@ print('Cross-validation...')
 
 cross_validator = KerasTunerCrossValidator(bayesian_tuner, X_train_default, y_train_default, model_builder,
                                            directory=CROSSVAL_DIR, project_name=PROJECT_NAME,
-                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, n_top=TOP_N,
+                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA, n_top=TOP_N,
                                            n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC, overwrite=OVERWRITE)
 model_scores = cross_validator()
 

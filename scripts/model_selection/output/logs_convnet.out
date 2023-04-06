@@ -1,0 +1,160 @@
+ gcccore/10.2.0 loaded.
+ zlib/1.2.11-gcccore-10.2.0 loaded.
+ binutils/2.35-gcccore-10.2.0 loaded.
+ gcc/10.2.0 loaded.
+ cudacore/11.1.1 loaded.
+ cuda/11.1.1-gcc-10.2.0 loaded.
+ gcccuda/2020b loaded.
+ numactl/2.0.13-gcccore-10.2.0 loaded.
+ xz/5.2.5-gcccore-10.2.0 loaded.
+ libxml2/2.9.10-gcccore-10.2.0 loaded.
+ libpciaccess/0.16-gcccore-10.2.0 loaded.
+ hwloc/2.2.0-gcccore-10.2.0 loaded.
+ libevent/2.1.12-gcccore-10.2.0 loaded.
+ check/0.15.2-gcccore-10.2.0 loaded.
+ gdrcopy/2.1-gcccore-10.2.0-cuda-11.1.1 loaded.
+ ucx/1.9.0-gcccore-10.2.0-cuda-11.1.1 loaded.
+ libfabric/1.11.0-gcccore-10.2.0 loaded.
+ pmix/3.1.5-gcccore-10.2.0 loaded.
+ openmpi/4.0.5-gcccuda-2020b loaded.
+ openblas/0.3.12-gcc-10.2.0 loaded.
+ gompic/2020b loaded.
+ fftw/3.3.8-gompic-2020b loaded.
+ scalapack/2.1.0-gompic-2020b loaded.
+ fosscuda/2020b loaded.
+ cudnn/8.1.0.77-cuda-11.1.1 loaded.
+ nccl/2.8.3-gcccore-10.2.0-cuda-11.1.1 loaded.
+ bzip2/1.0.8-gcccore-10.2.0 loaded.
+ ncurses/6.2-gcccore-10.2.0 loaded.
+ libreadline/8.0-gcccore-10.2.0 loaded.
+ tcl/8.6.10-gcccore-10.2.0 loaded.
+ sqlite/3.33.0-gcccore-10.2.0 loaded.
+ gmp/6.2.0-gcccore-10.2.0 loaded.
+ libffi/3.3-gcccore-10.2.0 loaded.
+ python/3.8.6-gcccore-10.2.0 loaded.
+ pybind11/2.6.0-gcccore-10.2.0 loaded.
+ scipy-bundle/2020.11-fosscuda-2020b loaded.
+ szip/2.1.1-gcccore-10.2.0 loaded.
+ hdf5/1.10.7-gompic-2020b loaded.
+ h5py/3.1.0-fosscuda-2020b loaded.
+ curl/7.72.0-gcccore-10.2.0 loaded.
+ double-conversion/3.1.5-gcccore-10.2.0 loaded.
+ flatbuffers/1.12.0-gcccore-10.2.0 loaded.
+ giflib/5.2.1-gcccore-10.2.0 loaded.
+ icu/67.1-gcccore-10.2.0 loaded.
+ jsoncpp/1.9.4-gcccore-10.2.0 loaded.
+ nasm/2.15.05-gcccore-10.2.0 loaded.
+ libjpeg-turbo/2.0.5-gcccore-10.2.0 loaded.
+ lmdb/0.9.24-gcccore-10.2.0 loaded.
+ nsync/1.24.0-gcccore-10.2.0 loaded.
+ pcre/8.44-gcccore-10.2.0 loaded.
+ protobuf/3.14.0-gcccore-10.2.0 loaded.
+ protobuf-python/3.14.0-gcccore-10.2.0 loaded.
+ flatbuffers-python/1.12-gcccore-10.2.0 loaded.
+ typing-extensions/3.7.4.3-gcccore-10.2.0 loaded.
+ libpng/1.6.37-gcccore-10.2.0 loaded.
+ snappy/1.1.8-gcccore-10.2.0 loaded.
+ tensorflow/2.8.0-fosscuda-2020b loaded.
+2023-04-06 18:54:11.052651: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-04-06 18:54:11.626330: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:be:00.0, compute capability: 7.0
+Setup...
+PWD: .
+PWD_TMP: /net/ascratch/people/plgkocotm/pps-diamond-time-measurement
+Loading dataset...
+(19594, 64) (19594,)
+Preprocessing...
+(12540, 48) (3135, 48) (12540,) (3135,)
+Model...
+Example summary
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ reshape (Reshape)           (None, 48, 1)             0         
+                                                                 
+ conv1d (Conv1D)             (None, 48, 8)             32        
+                                                                 
+ max_pooling1d (MaxPooling1D  (None, 24, 8)            0         
+ )                                                               
+                                                                 
+ flatten (Flatten)           (None, 192)               0         
+                                                                 
+ dense (Dense)               (None, 16)                3088      
+                                                                 
+ dense_1 (Dense)             (None, 1)                 17        
+                                                                 
+=================================================================
+Total params: 3,137
+Trainable params: 3,137
+Non-trainable params: 0
+_________________________________________________________________
+2023-04-06 18:54:15.737694: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8100
+None
+Tuning...
+Best models
+========== Model 0 ==========
+{'n_conv_blocks': 4, 'n_conv_layers': 2, 'conv_filters_mult': 4, 'conv_spatial_dropout': 0.2, 'n_mlp_hidden_layers': 2, 'mlp_units_mult': 1, 'mlp_dropout': 0.0, 'batch_normalization': True, 'input_batch_normalization': False}
+Number of parameters: 401281
+========== Model 1 ==========
+{'n_conv_blocks': 1, 'n_conv_layers': 2, 'conv_filters_mult': 8, 'conv_spatial_dropout': 0.2, 'n_mlp_hidden_layers': 2, 'mlp_units_mult': 1, 'mlp_dropout': 0.0, 'batch_normalization': True, 'input_batch_normalization': False}
+Number of parameters: 25505
+========== Model 2 ==========
+{'n_conv_blocks': 3, 'n_conv_layers': 2, 'conv_filters_mult': 2, 'conv_spatial_dropout': 0.2, 'n_mlp_hidden_layers': 1, 'mlp_units_mult': 16, 'mlp_dropout': 0.2, 'batch_normalization': True, 'input_batch_normalization': False}
+Number of parameters: 49937
+========== Model 3 ==========
+{'n_conv_blocks': 3, 'n_conv_layers': 3, 'conv_filters_mult': 1, 'conv_spatial_dropout': 0.0, 'n_mlp_hidden_layers': 1, 'mlp_units_mult': 16, 'mlp_dropout': 0.2, 'batch_normalization': True, 'input_batch_normalization': True}
+Number of parameters: 23713
+========== Model 4 ==========
+{'n_conv_blocks': 4, 'n_conv_layers': 1, 'conv_filters_mult': 4, 'conv_spatial_dropout': 0.0, 'n_mlp_hidden_layers': 1, 'mlp_units_mult': 16, 'mlp_dropout': 0.2, 'batch_normalization': False, 'input_batch_normalization': False}
+Number of parameters: 178881
+Cross-validation...
+========== Model 0 ==========
+{'n_conv_blocks': 4, 'n_conv_layers': 2, 'conv_filters_mult': 4, 'conv_spatial_dropout': 0.2, 'n_mlp_hidden_layers': 2, 'mlp_units_mult': 1, 'mlp_dropout': 0.0, 'batch_normalization': True, 'input_batch_normalization': False}
+Number of parameters: 401281
+Got score: 165.9782 (158.6478, 169.6352, 169.6516)
+Got score: 170.4122 (174.7536, 170.6522, 165.8307)
+Got score: 175.1711 (180.6553, 182.2533, 162.6047)
+Got score: 170.8909 (167.7407, 176.1366, 168.7953)
+Got score: 168.2670 (167.2122, 166.8687, 170.7201)
+========== Model 1 ==========
+{'n_conv_blocks': 1, 'n_conv_layers': 2, 'conv_filters_mult': 8, 'conv_spatial_dropout': 0.2, 'n_mlp_hidden_layers': 2, 'mlp_units_mult': 1, 'mlp_dropout': 0.0, 'batch_normalization': True, 'input_batch_normalization': False}
+Number of parameters: 25505
+Got score: 191.9365 (168.9719, 178.8546, 227.9831)
+Got score: 186.8758 (210.1318, 176.8578, 173.6377)
+Got score: 168.2745 (165.9121, 168.6158, 170.2956)
+Got score: 172.7959 (176.6062, 169.1911, 172.5903)
+Got score: 189.2798 (210.0363, 177.6180, 180.1851)
+========== Model 2 ==========
+{'n_conv_blocks': 3, 'n_conv_layers': 2, 'conv_filters_mult': 2, 'conv_spatial_dropout': 0.2, 'n_mlp_hidden_layers': 1, 'mlp_units_mult': 16, 'mlp_dropout': 0.2, 'batch_normalization': True, 'input_batch_normalization': False}
+Number of parameters: 49937
+Got score: 184.7916 (184.5396, 185.9413, 183.8937)
+Got score: 219.7445 (272.7748, 184.6378, 201.8210)
+Got score: 190.4955 (182.2354, 180.0604, 209.1909)
+Got score: 205.8572 (201.8931, 197.2894, 218.3891)
+Got score: 203.4786 (204.1500, 213.5309, 192.7548)
+========== Model 3 ==========
+{'n_conv_blocks': 3, 'n_conv_layers': 3, 'conv_filters_mult': 1, 'conv_spatial_dropout': 0.0, 'n_mlp_hidden_layers': 1, 'mlp_units_mult': 16, 'mlp_dropout': 0.2, 'batch_normalization': True, 'input_batch_normalization': True}
+Number of parameters: 23713
+Got score: 208.5160 (187.2418, 217.6414, 220.6647)
+Got score: 236.0958 (214.0921, 305.9698, 188.2255)
+Got score: 199.8896 (213.1892, 184.9995, 201.4802)
+Got score: 240.8314 (204.8373, 220.8762, 296.7806)
+Got score: 291.9674 (218.3084, 393.3958, 264.1978)
+========== Model 4 ==========
+{'n_conv_blocks': 4, 'n_conv_layers': 1, 'conv_filters_mult': 4, 'conv_spatial_dropout': 0.0, 'n_mlp_hidden_layers': 1, 'mlp_units_mult': 16, 'mlp_dropout': 0.2, 'batch_normalization': False, 'input_batch_normalization': False}
+Number of parameters: 178881
+Got score: 282.9122 (374.0916, 198.5422, 276.1029)
+Got score: 331.4144 (433.0512, 326.7221, 234.4699)
+Got score: 263.6125 (186.4054, 204.0416, 400.3906)
+Got score: 262.2831 (250.8801, 204.0605, 331.9087)
+Got score: 379.3694 (348.8821, 449.8437, 339.3824)
+Final results:
+         mean    std  n_params
+Model                         
+0      170.14   3.06    401281
+1      181.83   9.47     25505
+2      200.87  12.28     49937
+3      235.46  32.29     23713
+4      303.92  45.27    178881
+Elapsed 1794.010611594 seconds

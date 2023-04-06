@@ -1,0 +1,103 @@
+ gcccore/10.2.0 loaded.
+ zlib/1.2.11-gcccore-10.2.0 loaded.
+ binutils/2.35-gcccore-10.2.0 loaded.
+ gcc/10.2.0 loaded.
+ cudacore/11.1.1 loaded.
+ cuda/11.1.1-gcc-10.2.0 loaded.
+ gcccuda/2020b loaded.
+ numactl/2.0.13-gcccore-10.2.0 loaded.
+ xz/5.2.5-gcccore-10.2.0 loaded.
+ libxml2/2.9.10-gcccore-10.2.0 loaded.
+ libpciaccess/0.16-gcccore-10.2.0 loaded.
+ hwloc/2.2.0-gcccore-10.2.0 loaded.
+ libevent/2.1.12-gcccore-10.2.0 loaded.
+ check/0.15.2-gcccore-10.2.0 loaded.
+ gdrcopy/2.1-gcccore-10.2.0-cuda-11.1.1 loaded.
+ ucx/1.9.0-gcccore-10.2.0-cuda-11.1.1 loaded.
+ libfabric/1.11.0-gcccore-10.2.0 loaded.
+ pmix/3.1.5-gcccore-10.2.0 loaded.
+ openmpi/4.0.5-gcccuda-2020b loaded.
+ openblas/0.3.12-gcc-10.2.0 loaded.
+ gompic/2020b loaded.
+ fftw/3.3.8-gompic-2020b loaded.
+ scalapack/2.1.0-gompic-2020b loaded.
+ fosscuda/2020b loaded.
+ cudnn/8.1.0.77-cuda-11.1.1 loaded.
+ nccl/2.8.3-gcccore-10.2.0-cuda-11.1.1 loaded.
+ bzip2/1.0.8-gcccore-10.2.0 loaded.
+ ncurses/6.2-gcccore-10.2.0 loaded.
+ libreadline/8.0-gcccore-10.2.0 loaded.
+ tcl/8.6.10-gcccore-10.2.0 loaded.
+ sqlite/3.33.0-gcccore-10.2.0 loaded.
+ gmp/6.2.0-gcccore-10.2.0 loaded.
+ libffi/3.3-gcccore-10.2.0 loaded.
+ python/3.8.6-gcccore-10.2.0 loaded.
+ pybind11/2.6.0-gcccore-10.2.0 loaded.
+ scipy-bundle/2020.11-fosscuda-2020b loaded.
+ szip/2.1.1-gcccore-10.2.0 loaded.
+ hdf5/1.10.7-gompic-2020b loaded.
+ h5py/3.1.0-fosscuda-2020b loaded.
+ curl/7.72.0-gcccore-10.2.0 loaded.
+ double-conversion/3.1.5-gcccore-10.2.0 loaded.
+ flatbuffers/1.12.0-gcccore-10.2.0 loaded.
+ giflib/5.2.1-gcccore-10.2.0 loaded.
+ icu/67.1-gcccore-10.2.0 loaded.
+ jsoncpp/1.9.4-gcccore-10.2.0 loaded.
+ nasm/2.15.05-gcccore-10.2.0 loaded.
+ libjpeg-turbo/2.0.5-gcccore-10.2.0 loaded.
+ lmdb/0.9.24-gcccore-10.2.0 loaded.
+ nsync/1.24.0-gcccore-10.2.0 loaded.
+ pcre/8.44-gcccore-10.2.0 loaded.
+ protobuf/3.14.0-gcccore-10.2.0 loaded.
+ protobuf-python/3.14.0-gcccore-10.2.0 loaded.
+ flatbuffers-python/1.12-gcccore-10.2.0 loaded.
+ typing-extensions/3.7.4.3-gcccore-10.2.0 loaded.
+ libpng/1.6.37-gcccore-10.2.0 loaded.
+ snappy/1.1.8-gcccore-10.2.0 loaded.
+ tensorflow/2.8.0-fosscuda-2020b loaded.
+2023-04-06 19:13:52.445129: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-04-06 19:13:53.029246: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:e7:00.0, compute capability: 7.0
+Traceback (most recent call last):
+  File "/net/software/testing/software/Python/3.8.6-GCCcore-10.2.0/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/net/software/testing/software/Python/3.8.6-GCCcore-10.2.0/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 114, in <module>
+    regular_model_scores = cross_validator()
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 49, in __call__
+    hp_scores = self._compute_hp_scores(i_builder)
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 75, in _compute_hp_scores
+    score = self._compute_single_score(i_builder, X_train, y_train, X_val, y_val)
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 91, in _compute_single_score
+    score = self.eval_metric(y_val, y_pred)
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 98, in regular_metric
+    std = plot_difference_hist(y_true * TIME_STEP, y_pred * TIME_STEP, show=False, channel=CHANNEL, title=False,
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 167, in plot_difference_hist
+    mu, std, pcov = plot_diff_hist_stats(y_true, y_pred, show=False, n_bins=n_bins, hist_range=hist_range,
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 160, in plot_diff_hist_stats
+    return _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_range, hist_alpha, hist_label,
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 75, in _diff_hist_stats
+    mean_stat, std_stat, gauss_mean, gauss_std, gauss_a, pcov = _get_gauss_stats(bins_y, bins_x, return_all=True)
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 51, in _get_gauss_stats
+    mean_stat = weighted_stats.mean
+  File "pandas/_libs/properties.pyx", line 33, in pandas._libs.properties.CachedProperty.__get__
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/venv/lib/python3.8/site-packages/statsmodels/stats/weightstats.py", line 135, in mean
+    return self.sum / self.sum_weights
+  File "pandas/_libs/properties.pyx", line 33, in pandas._libs.properties.CachedProperty.__get__
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/venv/lib/python3.8/site-packages/statsmodels/stats/weightstats.py", line 130, in sum
+    return np.dot(self.data.T, self.weights)
+  File "<__array_function__ internals>", line 180, in dot
+ValueError: shapes (100,) and (3135,100) not aligned: 100 (dim 0) != 3135 (dim 0)
+Setup...
+PWD: .
+PWD_TMP: /net/ascratch/people/plgkocotm/pps-diamond-time-measurement
+Loading dataset...
+(19594, 64) (19594,)
+Preprocessing...
+(15675, 48) (15675,)
+(15675, 48)
+Regular models...
+========== Model: mlp ==========
+Number of parameters: 6643
+Elapsed 292.812183899 seconds

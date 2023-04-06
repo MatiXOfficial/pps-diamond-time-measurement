@@ -11,7 +11,7 @@ from tensorflow.keras import optimizers
 from tensorflow.keras import callbacks
 import keras_tuner as kt
 
-from src.models import mlp_builder as bare_model_builder
+from src.models import convnet_builder as bare_model_builder
 from src.utils import augmentation_random_cut
 from src.cross_validator import KerasTunerCrossValidator
 
@@ -29,21 +29,21 @@ print('PWD_TMP:', PWD_TMP)
 CHANNEL = 17
 N_BASELINE = 20
 
-OVERWRITE = True
+OVERWRITE = False
 
 PROJECT_NAME = 'convnet'
 TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
 CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
-ES_MIN_DELTA = 0.01
+ES_MIN_DELTA = 0.1
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
-MAX_TRIALS = 50
+MAX_TRIALS = 30
 EXECUTIONS_PER_TRIAL = 2
 
-TOP_N = 6
+TOP_N = 5
 CROSSVAL_N_CV = 5
 CROSSVAL_N_EXEC = 3
 LOSS_WEIGHT = 1000
@@ -78,8 +78,8 @@ print('Model...')
 
 def model_builder(hp: kt.HyperParameters) -> keras.Model:
     # Convolutional network params
-    hp_n_conv_blocks = hp.Int("n_conv_blocks", min_value=1, max_value=4, step=1, default=4)
-    hp_n_conv_layers = hp.Int("n_conv_layers", min_value=1, max_value=3, step=2)
+    hp_n_conv_blocks = hp.Int("n_conv_blocks", min_value=1, max_value=4, step=1, default=1)
+    hp_n_conv_layers = hp.Int("n_conv_layers", min_value=1, max_value=3, step=1)
     hp_filters_mult = hp.Choice("conv_filters_mult", values=[1, 2, 4, 8])
     hp_conv_spatial_dropout = hp.Choice("conv_spatial_dropout", values=[0.0, 0.1, 0.2])
 
@@ -131,7 +131,7 @@ print('Cross-validation...')
 
 cross_validator = KerasTunerCrossValidator(bayesian_tuner, X_train_default, y_train_default, model_builder,
                                            directory=CROSSVAL_DIR, project_name=PROJECT_NAME,
-                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, n_top=TOP_N,
+                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA, n_top=TOP_N,
                                            n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC, overwrite=OVERWRITE)
 model_scores = cross_validator()
 
