@@ -55,34 +55,9 @@
  libpng/1.6.37-gcccore-10.2.0 loaded.
  snappy/1.1.8-gcccore-10.2.0 loaded.
  tensorflow/2.8.0-fosscuda-2020b loaded.
-2023-04-06 21:14:34.872149: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+2023-04-07 00:47:25.574429: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2023-04-06 21:14:35.446836: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:be:00.0, compute capability: 7.0
-2023-04-06 21:14:41.914421: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8100
-/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/venv/lib/python3.8/site-packages/statsmodels/stats/weightstats.py:196: RuntimeWarning: invalid value encountered in sqrt
-  return np.sqrt(self.var)
-/net/software/testing/software/SciPy-bundle/2020.11-fosscuda-2020b/lib/python3.8/site-packages/scipy/optimize/minpack.py:828: OptimizeWarning: Covariance of the parameters could not be estimated
-  warnings.warn('Covariance of the parameters could not be estimated',
-Traceback (most recent call last):
-  File "/net/software/testing/software/Python/3.8.6-GCCcore-10.2.0/lib/python3.8/runpy.py", line 194, in _run_module_as_main
-    return _run_code(code, main_globals, None,
-  File "/net/software/testing/software/Python/3.8.6-GCCcore-10.2.0/lib/python3.8/runpy.py", line 87, in _run_code
-    exec(code, run_globals)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 142, in <module>
-    heatmap_model_scores = cross_validator()
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 49, in __call__
-    hp_scores = self._compute_hp_scores(i_builder)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 75, in _compute_hp_scores
-    score = self._compute_single_score(i_builder, X_train, y_train, X_val, y_val)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 91, in _compute_single_score
-    score = self.eval_metric(y_val, y_pred)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 127, in heatmap_metric
-    y_pred[i] = _get_gauss_stats(y)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 55, in _get_gauss_stats
-    popt, pcov = curve_fit(_gauss, x, y, p0=[1, mean_stat, std_stat])
-  File "/net/software/testing/software/SciPy-bundle/2020.11-fosscuda-2020b/lib/python3.8/site-packages/scipy/optimize/minpack.py", line 789, in curve_fit
-    raise RuntimeError("Optimal parameters not found: " + errmsg)
-RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
+2023-04-07 00:47:26.135479: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:2d:00.0, compute capability: 7.0
 Setup...
 PWD: .
 PWD_TMP: /net/ascratch/people/plgkocotm/pps-diamond-time-measurement
@@ -108,6 +83,16 @@ Got score: 62.7821 (59.1936, 63.7180, 65.4348)
 Got score: 62.4614 (63.1550, 62.3593, 61.8700)
 Heatmap models...
 ========== Model: unet ==========
-Number of parameters: 1490373
-Got score: 71.7775 (58.3610, 89.6982, 67.2734)
-Elapsed 1114.992554083 seconds
+Number of parameters: 370629
+Got score: 57.8798 (57.2353, 58.2557, 58.1485)
+Got score: 61.5916 (61.6956, 61.5655, 61.5136)
+Got score: 60.8136 (60.5915, 61.4863, 60.3630)
+Got score: 60.7826 (60.8495, 60.7019, 60.7965)
+Got score: 61.5831 (61.6607, 61.8981, 61.1904)
+Comparison...
+          mean   std  n_params
+Model                         
+mlp      64.80  0.97      6643
+convnet  61.10  1.66    401281
+unet     60.53  1.37    370629
+Elapsed 7.282017557 seconds
