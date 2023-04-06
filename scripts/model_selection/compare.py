@@ -3,7 +3,6 @@ import os
 import numpy as np
 import pandas as pd
 import tensorflow as tf
-from keras.backend import count_params
 from sklearn.model_selection import train_test_split
 
 tf.get_logger().setLevel('ERROR')
@@ -36,7 +35,7 @@ CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
 ES_MIN_DELTA_REGULAR = 0.1
-ES_MIN_DELTA_HEATMAP = 0.1
+ES_MIN_DELTA_HEATMAP = 0.01
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
@@ -70,7 +69,7 @@ X_train, _, y_train, _ = train_test_split(X_aug, y_aug, test_size=0.2, random_st
 print(X_train.shape, y_train.shape)
 
 
-def gaussian_kernel(mu, sigma=1., n=48):
+def gaussian_kernel(mu, sigma=0.8, n=48):
     x = np.arange(0, n)
     return np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
 
@@ -120,11 +119,11 @@ print('Heatmap models...')
 def heatmap_metric(y_heatmap_true, y_heatmap_pred):
     y_true = np.empty(y_heatmap_true.shape[0])
     for i, y in enumerate(y_heatmap_true):
-        y_true[i] = _get_gauss_stats(y)
+        y_true[i] = _get_gauss_stats(y, std_0=0.8)
 
     y_pred = np.empty(y_heatmap_pred.shape[0])
     for i, y in enumerate(y_heatmap_pred):
-        y_pred[i] = _get_gauss_stats(y)
+        y_pred[i] = _get_gauss_stats(y, std_0=0.8)
 
     std = plot_difference_hist(y_true * TIME_STEP, y_pred * TIME_STEP, show=False, channel=CHANNEL, title=False,
                                print_cov=False, hist_range=(-0.4, 0.4))
@@ -146,11 +145,11 @@ print('Comparison...')
 
 all_model_builders = regular_model_builders + heatmap_model_builders
 all_model_names = regular_model_names + heatmap_model_names
-all_model_scores = regular_model_scores | heatmap_model_scores
+all_model_scores = {**regular_model_scores, **heatmap_model_scores}
 
 mean_scores = [f"{np.mean(scores):0.2f}" for scores in all_model_scores.values()]
 std_scores = [f"{np.std(scores):0.2f}" for scores in all_model_scores.values()]
-n_params = [count_params(builder()) for builder in all_model_builders]
+n_params = [builder().count_params() for builder in all_model_builders]
 
 df = pd.DataFrame({'mean': mean_scores, 'std': std_scores, 'n_params': n_params}, index=list(all_model_scores.keys()))
 df.index.name = 'Model'

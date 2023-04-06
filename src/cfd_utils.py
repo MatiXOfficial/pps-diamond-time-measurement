@@ -42,7 +42,7 @@ def _gauss(x, a, mu, sigma):
     return a * np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
 
 
-def _get_gauss_stats(y, x=None, return_all=False):
+def _get_gauss_stats(y, x=None, return_all=False, mean_0: float = None, std_0: float = None):
     if x is None:
         x = np.arange(len(y))
 
@@ -51,8 +51,11 @@ def _get_gauss_stats(y, x=None, return_all=False):
     mean_stat = weighted_stats.mean
     std_stat = weighted_stats.std
 
+    mean_0 = mean_stat if mean_0 is None else mean_0
+    std_0 = std_stat if std_0 is None else std_0
+
     # fitted gaussian statistics
-    popt, pcov = curve_fit(_gauss, x, y, p0=[1, mean_stat, std_stat])
+    popt, pcov = curve_fit(_gauss, x, y, p0=[1, mean_0, std_0])
     gauss_a = popt[0]
     gauss_mean = popt[1]
     gauss_std = abs(popt[2])

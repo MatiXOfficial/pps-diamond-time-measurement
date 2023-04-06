@@ -36,11 +36,11 @@ TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
 CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
-ES_MIN_DELTA = 0.1
+ES_MIN_DELTA = 0.01
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048
-MAX_TRIALS = 40
+MAX_TRIALS = 30
 EXECUTIONS_PER_TRIAL = 2
 
 TOP_N = 5
@@ -71,7 +71,7 @@ X_train_default, _, y_train_default_t, _ = train_test_split(X_aug, y_aug, test_s
 X_train, X_val, y_train_t, y_val_t = train_test_split(X_train_default, y_train_default_t, test_size=0.2, random_state=42)
 
 
-def gaussian_kernel(mu, sigma=1., n=48):
+def gaussian_kernel(mu, sigma=0.8, n=48):
     x = np.arange(0, n)
     return np.exp(-(x - mu) ** 2 / (2 * sigma ** 2))
 
