@@ -1,3 +1,5 @@
+from typing import List, Union, Tuple
+
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.optimize import curve_fit
@@ -5,8 +7,6 @@ from scipy.stats import norm
 from statsmodels.stats.weightstats import DescrStatsW
 
 from src.cfd import CFD
-
-from typing import List, Union, Tuple
 
 TIME_STEP = 0.15625
 
@@ -159,3 +159,31 @@ def plot_diff_hist_stats(y_true, y_pred, show: bool = True, return_gauss_stats: 
     plt.xlabel('time [156.25 ps]')
     return _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_range, hist_alpha, hist_label,
                             plot_gauss, return_pcov)
+
+
+def plot_difference_hist(y_true, y_pred, channel, hist_range=(-2, 2), n_bins=100, xlabel=None, savefig=None, title=True,
+                         ymax=None, fontsize=17, print_cov: bool = True, show: bool = True):
+    plt.rc('font', size=fontsize)
+    mu, std, pcov = plot_diff_hist_stats(y_true, y_pred, show=False, n_bins=n_bins, hist_range=hist_range,
+                                         hist_label=None, plot_gauss=True, return_gauss_stats=True, return_pcov=True)
+
+    if title is not None:
+        plt.title(f'Diff histogram (channel={channel}), mean={mu:0.3f}, std={std:0.3f}')
+    if xlabel is not None:
+        plt.xlabel(xlabel)
+
+    if ymax is not None:
+        plt.ylim(top=ymax)
+
+    plt.grid()
+    if savefig is not None:
+        plt.tight_layout()
+        plt.savefig(savefig)
+
+    if show:
+        plt.show()
+    if print_cov:
+        print('Covariance matrix of the Gaussian fit:')
+        print(pcov)
+
+    return std
