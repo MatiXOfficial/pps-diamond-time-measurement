@@ -140,7 +140,8 @@ optimal_model_builders = OptimalModelBuilders(
     mlp=lambda: mlp_builder(hp_n_hidden_layers=4, hp_units_mult=4, hp_unit_decrease_factor=1.5,
                             hp_batch_normalization=True, hp_input_batch_normalization=True, hp_dropout=0.0),
 
-    convnet=lambda: convnet_builder(),
+    convnet=lambda: convnet_builder(hp_n_conv_blocks=4, hp_n_conv_layers=2, hp_filters_mult=4, hp_conv_spatial_dropout=0.2, hp_mlp_n_hidden_layers=2, 
+                                    hp_mlp_units_mult=1, hp_mlp_dropout=0.0, hp_batch_normalization=True, hp_input_batch_normalization=False),
 
     unet=lambda: unet_builder(hp_unet_depth=4, hp_n_conv_layers=2, hp_filters_mult=4, hp_spatial_dropout=0.1,
                               hp_batch_normalization=True, hp_input_batch_normalization=True),

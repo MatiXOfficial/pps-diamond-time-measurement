@@ -55,40 +55,34 @@
  libpng/1.6.37-gcccore-10.2.0 loaded.
  snappy/1.1.8-gcccore-10.2.0 loaded.
  tensorflow/2.8.0-fosscuda-2020b loaded.
-2023-04-06 19:13:52.445129: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+2023-04-06 21:14:34.872149: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2023-04-06 19:13:53.029246: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:e7:00.0, compute capability: 7.0
+2023-04-06 21:14:35.446836: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:be:00.0, compute capability: 7.0
+2023-04-06 21:14:41.914421: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8100
+/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/venv/lib/python3.8/site-packages/statsmodels/stats/weightstats.py:196: RuntimeWarning: invalid value encountered in sqrt
+  return np.sqrt(self.var)
+/net/software/testing/software/SciPy-bundle/2020.11-fosscuda-2020b/lib/python3.8/site-packages/scipy/optimize/minpack.py:828: OptimizeWarning: Covariance of the parameters could not be estimated
+  warnings.warn('Covariance of the parameters could not be estimated',
 Traceback (most recent call last):
   File "/net/software/testing/software/Python/3.8.6-GCCcore-10.2.0/lib/python3.8/runpy.py", line 194, in _run_module_as_main
     return _run_code(code, main_globals, None,
   File "/net/software/testing/software/Python/3.8.6-GCCcore-10.2.0/lib/python3.8/runpy.py", line 87, in _run_code
     exec(code, run_globals)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 114, in <module>
-    regular_model_scores = cross_validator()
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 142, in <module>
+    heatmap_model_scores = cross_validator()
   File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 49, in __call__
     hp_scores = self._compute_hp_scores(i_builder)
   File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 75, in _compute_hp_scores
     score = self._compute_single_score(i_builder, X_train, y_train, X_val, y_val)
   File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cross_validator.py", line 91, in _compute_single_score
     score = self.eval_metric(y_val, y_pred)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 98, in regular_metric
-    std = plot_difference_hist(y_true * TIME_STEP, y_pred * TIME_STEP, show=False, channel=CHANNEL, title=False,
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 167, in plot_difference_hist
-    mu, std, pcov = plot_diff_hist_stats(y_true, y_pred, show=False, n_bins=n_bins, hist_range=hist_range,
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 160, in plot_diff_hist_stats
-    return _diff_hist_stats(timestamps_diff, show, return_gauss_stats, n_bins, hist_range, hist_alpha, hist_label,
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 75, in _diff_hist_stats
-    mean_stat, std_stat, gauss_mean, gauss_std, gauss_a, pcov = _get_gauss_stats(bins_y, bins_x, return_all=True)
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 51, in _get_gauss_stats
-    mean_stat = weighted_stats.mean
-  File "pandas/_libs/properties.pyx", line 33, in pandas._libs.properties.CachedProperty.__get__
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/venv/lib/python3.8/site-packages/statsmodels/stats/weightstats.py", line 135, in mean
-    return self.sum / self.sum_weights
-  File "pandas/_libs/properties.pyx", line 33, in pandas._libs.properties.CachedProperty.__get__
-  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/venv/lib/python3.8/site-packages/statsmodels/stats/weightstats.py", line 130, in sum
-    return np.dot(self.data.T, self.weights)
-  File "<__array_function__ internals>", line 180, in dot
-ValueError: shapes (100,) and (3135,100) not aligned: 100 (dim 0) != 3135 (dim 0)
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/scripts/model_selection/compare.py", line 127, in heatmap_metric
+    y_pred[i] = _get_gauss_stats(y)
+  File "/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/src/cfd_utils.py", line 55, in _get_gauss_stats
+    popt, pcov = curve_fit(_gauss, x, y, p0=[1, mean_stat, std_stat])
+  File "/net/software/testing/software/SciPy-bundle/2020.11-fosscuda-2020b/lib/python3.8/site-packages/scipy/optimize/minpack.py", line 789, in curve_fit
+    raise RuntimeError("Optimal parameters not found: " + errmsg)
+RuntimeError: Optimal parameters not found: Number of calls to function has reached maxfev = 800.
 Setup...
 PWD: .
 PWD_TMP: /net/ascratch/people/plgkocotm/pps-diamond-time-measurement
@@ -100,4 +94,20 @@ Preprocessing...
 Regular models...
 ========== Model: mlp ==========
 Number of parameters: 6643
-Elapsed 292.812183899 seconds
+Got score: 63.5988 (62.3464, 64.5594, 63.8905)
+Got score: 64.7398 (65.1158, 64.3178, 64.7857)
+Got score: 66.4578 (68.1935, 65.4089, 65.7712)
+Got score: 64.1522 (64.5860, 63.9199, 63.9507)
+Got score: 65.0439 (65.5622, 65.0455, 64.5241)
+========== Model: convnet ==========
+Number of parameters: 401281
+Got score: 58.1156 (58.2759, 58.1270, 57.9438)
+Got score: 60.7053 (60.0733, 61.8245, 60.2182)
+Got score: 61.4159 (60.5259, 61.9893, 61.7325)
+Got score: 62.7821 (59.1936, 63.7180, 65.4348)
+Got score: 62.4614 (63.1550, 62.3593, 61.8700)
+Heatmap models...
+========== Model: unet ==========
+Number of parameters: 1490373
+Got score: 71.7775 (58.3610, 89.6982, 67.2734)
+Elapsed 1114.992554083 seconds

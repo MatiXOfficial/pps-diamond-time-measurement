@@ -95,8 +95,8 @@ print('Regular models...')
 
 
 def regular_metric(y_true, y_pred):
-    std = plot_difference_hist(y_true * TIME_STEP, y_pred * TIME_STEP, show=False, channel=CHANNEL, title=False,
-                               print_cov=False)
+    std = plot_difference_hist(y_true * TIME_STEP, y_pred[:, 0] * TIME_STEP, show=False, channel=CHANNEL, title=False,
+                               print_cov=False, hist_range=(-0.4, 0.4))
     return std * 1000  # ps
 
 
@@ -118,8 +118,6 @@ print('Heatmap models...')
 
 
 def heatmap_metric(y_heatmap_true, y_heatmap_pred):
-    x = np.arange(24)
-
     y_true = np.empty(y_heatmap_true.shape[0])
     for i, y in enumerate(y_heatmap_true):
         y_true[i] = _get_gauss_stats(y)
@@ -128,9 +126,8 @@ def heatmap_metric(y_heatmap_true, y_heatmap_pred):
     for i, y in enumerate(y_heatmap_pred):
         y_pred[i] = _get_gauss_stats(y)
 
-    std, _, _ = plot_difference_hist(y_true, y_pred, show=False, close=False)
     std = plot_difference_hist(y_true * TIME_STEP, y_pred * TIME_STEP, show=False, channel=CHANNEL, title=False,
-                               print_cov=False)
+                               print_cov=False, hist_range=(-0.4, 0.4))
     return std * 1000  # ps
 
 
