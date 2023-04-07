@@ -131,8 +131,9 @@ print('Cross-validation...')
 
 cross_validator = KerasTunerCrossValidator(bayesian_tuner, X_train_default, y_train_default, model_builder,
                                            directory=CROSSVAL_DIR, project_name=PROJECT_NAME,
-                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA, n_top=TOP_N,
-                                           n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC, overwrite=OVERWRITE)
+                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA,
+                                           n_top=TOP_N, n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC,
+                                           overwrite=OVERWRITE)
 model_scores = cross_validator()
 
 mean_scores = [f"{np.mean(scores):0.2f}" for scores in model_scores.values()]

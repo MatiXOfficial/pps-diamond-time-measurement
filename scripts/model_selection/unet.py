@@ -68,7 +68,8 @@ all_X /= all_X.max(axis=1)[:, None]
 X_aug, y_aug = augmentation_random_cut(all_X, all_y, 8, seed=42, apply=True)
 
 X_train_default, _, y_train_default_t, _ = train_test_split(X_aug, y_aug, test_size=0.2, random_state=42)
-X_train, X_val, y_train_t, y_val_t = train_test_split(X_train_default, y_train_default_t, test_size=0.2, random_state=42)
+X_train, X_val, y_train_t, y_val_t = train_test_split(X_train_default, y_train_default_t, test_size=0.2,
+                                                      random_state=42)
 
 
 def gaussian_kernel(mu, sigma=0.8, n=48):
@@ -130,8 +131,9 @@ print('Cross-validation...')
 
 cross_validator = KerasTunerCrossValidator(bayesian_tuner, X_train_default, y_train_default, model_builder,
                                            directory=CROSSVAL_DIR, project_name=PROJECT_NAME,
-                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA, n_top=TOP_N,
-                                           n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC, overwrite=OVERWRITE)
+                                           n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA,
+                                           n_top=TOP_N, n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC,
+                                           overwrite=OVERWRITE)
 model_scores = cross_validator()
 
 mean_scores = [f"{np.mean(scores):0.2f}" for scores in model_scores.values()]

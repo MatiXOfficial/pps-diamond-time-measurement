@@ -1,7 +1,7 @@
+from typing import List, Dict, Tuple
+
 import numpy as np
 from matplotlib import pyplot as plt
-
-from typing import List, Dict, Tuple
 
 
 def plot_sample(ampl: List[float], time: List[float] = None, title: str = '', timestamp: float = None,
@@ -61,7 +61,7 @@ def plot_history(history: Dict[str, np.array], title: str, ymax: float = None, f
     plt.legend()
 
     plt.suptitle(title)
-    
+
     if savefig is not None:
         plt.tight_layout()
         plt.savefig(savefig)

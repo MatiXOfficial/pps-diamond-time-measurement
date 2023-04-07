@@ -106,7 +106,8 @@ regular_model_builders = [
 regular_model_names = ['mlp', 'convnet']
 
 cross_validator = CrossValidator(regular_model_builders, X_train, y_train, CROSSVAL_DIR, PROJECT_NAME,
-                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA_REGULAR, n_cv=CROSSVAL_N_CV,
+                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA_REGULAR,
+                                 n_cv=CROSSVAL_N_CV,
                                  n_executions=CROSSVAL_N_EXEC, model_names=regular_model_names,
                                  eval_metric=regular_metric, overwrite=OVERWRITE)
 
@@ -134,8 +135,8 @@ heatmap_model_builders = [compile_wrapper(optimal_model_builders.unet, loss_weig
 heatmap_model_names = ['unet']
 
 cross_validator = CrossValidator(heatmap_model_builders, X_train, y_train_heatmap, CROSSVAL_DIR, PROJECT_NAME,
-                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA_HEATMAP, n_cv=CROSSVAL_N_CV,
-                                 n_executions=CROSSVAL_N_EXEC, model_names=heatmap_model_names,
+                                 n_epochs=N_EPOCHS, batch_size=BATCH_SIZE, es_min_delta=ES_MIN_DELTA_HEATMAP,
+                                 n_cv=CROSSVAL_N_CV, n_executions=CROSSVAL_N_EXEC, model_names=heatmap_model_names,
                                  eval_metric=heatmap_metric, overwrite=False)
 
 heatmap_model_scores = cross_validator()
