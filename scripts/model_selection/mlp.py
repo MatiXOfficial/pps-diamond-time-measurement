@@ -36,7 +36,7 @@ TRIALS_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/tuner'
 CROSSVAL_DIR = PWD_TMP + f'/data/model_selection/channel_{CHANNEL}/cross_val'
 
 LR = 0.01
-ES_MIN_DELTA = 0.1
+ES_MIN_DELTA = 0.01
 
 N_EPOCHS = 3000
 BATCH_SIZE = 2048

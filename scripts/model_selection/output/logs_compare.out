@@ -55,9 +55,14 @@
  libpng/1.6.37-gcccore-10.2.0 loaded.
  snappy/1.1.8-gcccore-10.2.0 loaded.
  tensorflow/2.8.0-fosscuda-2020b loaded.
-2023-04-07 00:47:25.574429: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
+2023-04-07 11:51:29.009794: I tensorflow/core/platform/cpu_feature_guard.cc:151] This TensorFlow binary is optimized with oneAPI Deep Neural Network Library (oneDNN) to use the following CPU instructions in performance-critical operations:  AVX2 AVX512F FMA
 To enable them in other operations, rebuild TensorFlow with the appropriate compiler flags.
-2023-04-07 00:47:26.135479: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:2d:00.0, compute capability: 7.0
+2023-04-07 11:51:29.642542: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1525] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 30989 MB memory:  -> device: 0, name: Tesla V100-SXM2-32GB, pci bus id: 0000:df:00.0, compute capability: 7.0
+2023-04-07 11:58:18.784983: I tensorflow/stream_executor/cuda/cuda_dnn.cc:368] Loaded cuDNN version 8100
+/net/people/plgrid/plgkocotm/cern_test_beam_ml/pps-diamond-time-measurement/venv/lib/python3.8/site-packages/statsmodels/stats/weightstats.py:196: RuntimeWarning: invalid value encountered in sqrt
+  return np.sqrt(self.var)
+/net/software/testing/software/SciPy-bundle/2020.11-fosscuda-2020b/lib/python3.8/site-packages/scipy/optimize/minpack.py:828: OptimizeWarning: Covariance of the parameters could not be estimated
+  warnings.warn('Covariance of the parameters could not be estimated',
 Setup...
 PWD: .
 PWD_TMP: /net/ascratch/people/plgkocotm/pps-diamond-time-measurement
@@ -68,31 +73,31 @@ Preprocessing...
 (15675, 48)
 Regular models...
 ========== Model: mlp ==========
-Number of parameters: 6643
-Got score: 63.5988 (62.3464, 64.5594, 63.8905)
-Got score: 64.7398 (65.1158, 64.3178, 64.7857)
-Got score: 66.4578 (68.1935, 65.4089, 65.7712)
-Got score: 64.1522 (64.5860, 63.9199, 63.9507)
-Got score: 65.0439 (65.5622, 65.0455, 64.5241)
+Number of parameters: 2737
+Got score: 62.2520 (61.8898, 63.5250, 61.3414)
+Got score: 64.1638 (64.3552, 64.0708, 64.0654)
+Got score: 64.0925 (64.1858, 64.6720, 63.4197)
+Got score: 64.3232 (63.0456, 65.9665, 63.9574)
+Got score: 64.6807 (64.4985, 65.6295, 63.9141)
 ========== Model: convnet ==========
-Number of parameters: 401281
-Got score: 58.1156 (58.2759, 58.1270, 57.9438)
-Got score: 60.7053 (60.0733, 61.8245, 60.2182)
-Got score: 61.4159 (60.5259, 61.9893, 61.7325)
-Got score: 62.7821 (59.1936, 63.7180, 65.4348)
-Got score: 62.4614 (63.1550, 62.3593, 61.8700)
+Number of parameters: 36865
+Got score: 60.2729 (61.0052, 60.3887, 59.4249)
+Got score: 62.8860 (63.3472, 62.3878, 62.9230)
+Got score: 63.4463 (64.1480, 62.3253, 63.8655)
+Got score: 64.1510 (65.6979, 61.7084, 65.0468)
+Got score: 63.3919 (62.7827, 63.2426, 64.1504)
 Heatmap models...
 ========== Model: unet ==========
-Number of parameters: 370629
-Got score: 57.8798 (57.2353, 58.2557, 58.1485)
-Got score: 61.5916 (61.6956, 61.5655, 61.5136)
-Got score: 60.8136 (60.5915, 61.4863, 60.3630)
-Got score: 60.7826 (60.8495, 60.7019, 60.7965)
-Got score: 61.5831 (61.6607, 61.8981, 61.1904)
+Number of parameters: 456965
+Got score: 58.4670 (58.5133, 58.4867, 58.4010)
+Got score: 61.3665 (61.1652, 61.3238, 61.6105)
+Got score: 61.2299 (61.1195, 61.1481, 61.4221)
+Got score: 60.5852 (60.9375, 60.5477, 60.2705)
+Got score: 61.8857 (62.3317, 61.4993, 61.8260)
 Comparison...
           mean   std  n_params
 Model                         
-mlp      64.80  0.97      6643
-convnet  61.10  1.66    401281
-unet     60.53  1.37    370629
-Elapsed 7.282017557 seconds
+mlp      63.90  0.85      2737
+convnet  62.83  1.34     36865
+unet     60.71  1.19    456965
+Elapsed 4976.120518875 seconds

@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH -A plgccbmc11-gpu
 #SBATCH -p plgrid-gpu-v100
-#SBATCH --time=4:00:00
+#SBATCH --time=2:00:00
 #SBATCH --gres=gpu:1
 #SBATCH --output=scripts/model_selection/output/logs_mlp.out
 
