@@ -146,3 +146,5 @@ optimal_model_builders = OptimalModelBuilders(
     unet=lambda: unet_builder(hp_unet_depth=2, hp_n_conv_layers=3, hp_filters_mult=8, hp_spatial_dropout=0.1,
                               hp_batch_normalization=True, hp_input_batch_normalization=True),
 )
+
+optimal_model_builder = optimal_model_builders.unet
