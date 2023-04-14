@@ -65,7 +65,7 @@ print('Preprocessing...')
 all_X -= np.mean(all_X[:, :N_BASELINE], axis=1)[:, None]
 all_X /= all_X.max(axis=1)[:, None]
 
-X_aug, y_aug = augmentation_random_cut(all_X, all_y, 8, seed=42, apply=True)
+X_aug, y_aug = augmentation_random_cut(all_X, all_y, 16, seed=42, apply=True)
 
 X_train_default, _, y_train_default_t, _ = train_test_split(X_aug, y_aug, test_size=0.2, random_state=42)
 X_train, X_val, y_train_t, y_val_t = train_test_split(X_train_default, y_train_default_t, test_size=0.2,
