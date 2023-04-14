@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from functools import partial
 from typing import Callable
 
 from tensorflow import keras
@@ -6,9 +7,10 @@ from tensorflow.keras import layers
 
 
 def mlp_builder(hp_n_hidden_layers: int, hp_units_mult: int, hp_unit_decrease_factor: float,
-                hp_batch_normalization: bool, hp_input_batch_normalization: bool, hp_dropout: float) -> keras.Model:
+                hp_batch_normalization: bool, hp_input_batch_normalization: bool, hp_dropout: float,
+                input_size: int = 48) -> keras.Model:
     model = keras.Sequential()
-    model.add(layers.Input(48))
+    model.add(layers.Input(input_size))
     if hp_input_batch_normalization:
         model.add(layers.BatchNormalization())
 
@@ -29,9 +31,10 @@ def mlp_builder(hp_n_hidden_layers: int, hp_units_mult: int, hp_unit_decrease_fa
 
 def convnet_builder(hp_n_conv_blocks: int, hp_n_conv_layers: int, hp_filters_mult: int, hp_conv_spatial_dropout: float,
                     hp_mlp_n_hidden_layers: int, hp_mlp_units_mult: int, hp_mlp_dropout: float,
-                    hp_batch_normalization: bool, hp_input_batch_normalization: bool) -> keras.Model:
+                    hp_batch_normalization: bool, hp_input_batch_normalization: bool,
+                    input_size: int = 48) -> keras.Model:
     model = keras.Sequential()
-    model.add(layers.Input(48))
+    model.add(layers.Input(input_size))
     if hp_input_batch_normalization:
         model.add(layers.BatchNormalization())
 
@@ -96,8 +99,8 @@ def _deconv_block(x, skip, n_filters, kernel_size: int = 3, n_conv_layers: int =
 
 
 def unet_builder(hp_unet_depth: int, hp_n_conv_layers: int, hp_filters_mult: int, hp_spatial_dropout: float,
-                 hp_batch_normalization: bool, hp_input_batch_normalization: bool) -> keras.Model:
-    inputs = layers.Input(48)
+                 hp_batch_normalization: bool, hp_input_batch_normalization: bool, input_size: int = 48) -> keras.Model:
+    inputs = layers.Input(input_size)
     x = layers.Reshape((-1, 1))(inputs)
     if hp_input_batch_normalization:
         x = layers.BatchNormalization()(x)
@@ -137,16 +140,15 @@ class OptimalModelBuilders:
 
 
 optimal_model_builders = OptimalModelBuilders(
-    mlp=lambda: mlp_builder(hp_n_hidden_layers=6, hp_units_mult=4, hp_unit_decrease_factor=1.0,
-                            hp_batch_normalization=True, hp_input_batch_normalization=True, hp_dropout=0.0),
+    mlp=partial(mlp_builder, hp_n_hidden_layers=6, hp_units_mult=4, hp_unit_decrease_factor=1.0,
+                hp_batch_normalization=True, hp_input_batch_normalization=True, hp_dropout=0.0),
 
-    convnet=lambda: convnet_builder(hp_n_conv_blocks=4, hp_n_conv_layers=1, hp_filters_mult=2,
-                                    hp_conv_spatial_dropout=0.2, hp_mlp_n_hidden_layers=2,
-                                    hp_mlp_units_mult=1, hp_mlp_dropout=0.0, hp_batch_normalization=True,
-                                    hp_input_batch_normalization=True),
+    convnet=partial(convnet_builder, hp_n_conv_blocks=4, hp_n_conv_layers=1, hp_filters_mult=2,
+                    hp_conv_spatial_dropout=0.2, hp_mlp_n_hidden_layers=2, hp_mlp_units_mult=1, hp_mlp_dropout=0.0,
+                    hp_batch_normalization=True, hp_input_batch_normalization=True),
 
-    unet=lambda: unet_builder(hp_unet_depth=2, hp_n_conv_layers=3, hp_filters_mult=8, hp_spatial_dropout=0.1,
-                              hp_batch_normalization=True, hp_input_batch_normalization=True),
+    unet=partial(unet_builder, hp_unet_depth=2, hp_n_conv_layers=3, hp_filters_mult=8, hp_spatial_dropout=0.1,
+                 hp_batch_normalization=True, hp_input_batch_normalization=True),
 )
 
 optimal_model_builder = optimal_model_builders.unet
