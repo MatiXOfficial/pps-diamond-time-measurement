@@ -167,13 +167,16 @@ def plot_diff_hist_stats(y_true, y_pred, show: bool = True, return_gauss_stats: 
 
 def plot_difference_hist(y_true, y_pred, channel, hist_range=(-2, 2), n_bins=100, xlabel=None, savefig=None,
                          title: bool = True, ymax=None, fontsize=17, print_cov: bool = True, show: bool = True,
-                         save_title: bool = False):
+                         save_title: bool = False, title_text: str = ""):
     plt.rc('font', size=fontsize)
     mu, std, pcov = plot_diff_hist_stats(y_true, y_pred, show=False, n_bins=n_bins, hist_range=hist_range,
                                          hist_label=None, plot_gauss=True, return_gauss_stats=True, return_pcov=True)
 
     if title:
-        plt.title(f'Diff histogram (channel={channel}), mean={mu:0.3f}, std={std:0.3f}')
+        if title_text:
+            plt.title(title_text)
+        else:
+            plt.title(f'Diff histogram (channel={channel}), mean={mu:0.3f}, std={std:0.3f}')
     if xlabel is not None:
         plt.xlabel(xlabel)
 
@@ -187,7 +190,10 @@ def plot_difference_hist(y_true, y_pred, channel, hist_range=(-2, 2), n_bins=100
         plt.tight_layout()
         save_plt(savefig)
         if title:
-            plt.title(f'Diff histogram (channel={channel}), mean={mu:0.3f}, std={std:0.3f}')
+            if title_text:
+                plt.title(title_text)
+            else:
+                plt.title(f'Diff histogram (channel={channel}), mean={mu:0.3f}, std={std:0.3f}')
 
     if show:
         plt.show()
